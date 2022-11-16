@@ -19,6 +19,8 @@ public class GridManager : MonoBehaviour
             {
                 Tile t = Instantiate(gridTile, new Vector3((float)i * 0.5f, j), Quaternion.identity);
 
+                t.name = $"tile {i} {j}";
+
                 /*if (i % 2 == 0 && j % 2 != 0 || i % 2 != 0 && j % 2 == 0)
                 {
                     t.TileInit(true);
@@ -30,18 +32,23 @@ public class GridManager : MonoBehaviour
 
                 if (i % 2 != 0)
                 {
-                    t.transform.position = t.transform.position + Vector3.up*0.5f;
+                    t.transform.position = t.transform.position + Vector3.up*0.5f;                    
                 }
             }
         }
 
-        cam.transform.position = new Vector3((float)width / 4, (float)height / 2 - 0.5f, -10);
+        cam.transform.position = new Vector3((float)width / 4, (float)height / 3 * 2, -10);
+    }
+
+    private void Awake()
+    {
+        GenerateGrid();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        GenerateGrid();
+        
     }
 
     // Update is called once per frame

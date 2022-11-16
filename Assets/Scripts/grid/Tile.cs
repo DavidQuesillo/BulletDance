@@ -7,6 +7,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer sRend;
     [SerializeField] private GameObject hl;
     public bool off;
+    public int isPlayer;
 
     public void TileInit(bool isOffset)
     {
@@ -43,5 +44,16 @@ public class Tile : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetAsPlayerOn(int who) //is it player int 1 or player int 2?
+    {
+        isPlayer = who;
+        transform.position = new Vector3(transform.position.x, transform.position.y, -1);
+    }
+    public void SetAsPlayerOff() //no player means player zero (??????)
+    {
+        isPlayer = 0;
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
     }
 }

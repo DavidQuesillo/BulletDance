@@ -10,7 +10,7 @@
                     "type": "Value",
                     "id": "8b95295c-2140-4cdc-87d2-19c35df7abe9",
                     "expectedControlType": "Vector2",
-                    "processors": "",
+                    "processors": "NormalizeVector2",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -20,7 +20,7 @@
                     "id": "972824e9-68ad-49e5-9271-ffdca9d83665",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 },
                 {
@@ -29,7 +29,7 @@
                     "id": "8714c61a-dad6-431a-825c-dd5d9ef3f666",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 },
                 {
@@ -38,7 +38,7 @@
                     "id": "a6e566f1-bcec-493f-b433-b51319c66345",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 },
                 {
@@ -47,8 +47,8 @@
                     "id": "b4a45d19-4bd2-4f4f-8fb9-15e3498ca8fd",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
+                    "interactions": "Press",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Shoot",
@@ -56,7 +56,7 @@
                     "id": "4c55303b-095b-4b88-98d9-e517403ff852",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 }
             ],
