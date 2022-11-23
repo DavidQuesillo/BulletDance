@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] private int width;
-    [SerializeField] private int height;
+    public static GridManager instance;
+
+    [SerializeField] public int width;
+    [SerializeField] public int height;
 
     [SerializeField] private Tile gridTile;
 
     [SerializeField] private Transform cam;
+    public Tile[,] grid;
 
     void GenerateGrid()
     {
+        grid = new Tile[width, height];
+
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
@@ -20,7 +25,7 @@ public class GridManager : MonoBehaviour
                 Tile t = Instantiate(gridTile, new Vector3((float)i * 0.5f, j), Quaternion.identity);
 
                 t.name = $"tile {i} {j}";
-
+                grid[i, j] = t;
                 /*if (i % 2 == 0 && j % 2 != 0 || i % 2 != 0 && j % 2 == 0)
                 {
                     t.TileInit(true);
@@ -42,6 +47,14 @@ public class GridManager : MonoBehaviour
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         GenerateGrid();
     }
 
