@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Bullet : MonoBehaviour
 {
@@ -8,10 +9,14 @@ public class Bullet : MonoBehaviour
     [SerializeField] private SpriteRenderer sr;
     public PlayerTurns shotByWho = PlayerTurns.Player1;
     private Vector2 dir;
+    private bool hasToMove;
+    private WaitForSeconds bulletDelay;
+    [SerializeField] private float bulletMoveTimer = 1f;
 
     void Start()
     {
-        GameManager.onActionPassed += AdvanceBullet;
+        bulletDelay = new WaitForSeconds(bulletMoveTimer);
+        GameManager.onPlayedMoved += AdvanceBullet;
     }
 
     public void BulletInit(PlayerTurns whose, Vector2 flyTo)
@@ -71,12 +76,17 @@ public class Bullet : MonoBehaviour
 
         if (tilehit != null)
         {
-            rb.MovePosition(tilehit.transform.position); //replace with tween
+            //rb.MovePosition(tilehit.transform.position); //replace with tween
+            //StartCoroutine(BulletMovement(tilehit.transform.position, false));
+            rb.DOMove(tilehit.transform.position, 0.5f);
         }
         else
         {
             //Destroy(gameObject); //replace with tween into pooling
-            gameObject.SetActive(false); //still needs tween
+            //gameObject.SetActive(false); //still needs tween
+            //StartCoroutine(BulletMovement(rb.position + dir, true));
+            Tween t = rb.DOMove(tilehit.transform.position, 0.5f);
+            Destroy(gameObject, 0.5f);
         }
     }
 
@@ -84,5 +94,19 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private IEnumerator BulletMovement(Vector2 to, bool poolAfter)
+    {
+        yield return bulletDelay;
+        Tween t = rb.DOMove(to, 0.5f);
+
+        while (t.IsActive())
+        {
+            yield return null;
+        }
+
+        //GameManager.instance.SpendAction();
+        yield break;
     }
 }

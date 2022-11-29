@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private PlayerTurns whichPlayer;
     [SerializeField] private Tile tileOn;
+    [SerializeField] private float moveDuration = 0.5f;
+    private bool moving;
     
 
     // Start is called before the first frame update
@@ -59,7 +62,7 @@ public class Player : MonoBehaviour
     {
         if (ctx.started)
         {
-            if (GameManager.instance.playerPlaying != whichPlayer)
+            if (GameManager.instance.playerPlaying != whichPlayer || moving)
             {
                 return;
             }
@@ -67,13 +70,16 @@ public class Player : MonoBehaviour
 
             if (tilehit != null)
             {
-                rb.MovePosition(tilehit.transform.position); //replace with tween
+                //rb.MovePosition(tilehit.transform.position); //replace with tween
+                StartCoroutine(PlayerMove(tilehit.transform.position)); //here it is
+
                 tileOn.SetAsPlayerOff();
-                tilehit.GetComponent<Tile>().SetAsPlayerOn(whichPlayer);
+                //tilehit.GetComponent<Tile>().SetAsPlayerOn(whichPlayer);
 
                 tileOn = tilehit.GetComponent<Tile>();
-                GameManager.instance.SpendAction();
-                print("moved to " + tilehit.name);
+                tileOn.SetAsPlayerOn(whichPlayer);
+                //GameManager.instance.SpendAction();
+                //print("moved to " + tilehit.name);
             }
             /*else
             {
@@ -87,7 +93,7 @@ public class Player : MonoBehaviour
     {
         if (ctx.started)
         {
-            if (GameManager.instance.playerPlaying != whichPlayer)
+            if (GameManager.instance.playerPlaying != whichPlayer || moving)
             {
                 return;
             }
@@ -101,5 +107,23 @@ public class Player : MonoBehaviour
                 b.GetComponent<Bullet>().BulletInit(whichPlayer, dir);
             }
         }
+    }
+
+    private IEnumerator PlayerMove(Vector2 to)
+    {
+        Tween t = rb.DOMove(to, moveDuration);
+        moving = true;
+
+        /*while (t.IsActive())
+        {
+            yield return null;
+        }*/
+        yield return t.WaitForCompletion();
+
+        yield return new WaitForSeconds(0.5f);
+
+        GameManager.instance.SpendAction();
+        moving = false;
+        yield break;
     }
 }

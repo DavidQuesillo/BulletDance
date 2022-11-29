@@ -14,8 +14,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int turn;
     [SerializeField] private int actionsInTurn;
 
-    public delegate void OnActionPassed();
-    public static event OnActionPassed onActionPassed;
+    public delegate void OnPlayerMoved();
+    public static event OnPlayerMoved onPlayedMoved;
 
     private void Awake()
     {
@@ -31,23 +31,21 @@ public class GameManager : MonoBehaviour
         if (Random.value < 0.5f)
         {
             playerPlaying = PlayerTurns.Player1;
-            player2.GetComponent<PlayerInput>().enabled = false;
-            player1.GetComponent<PlayerInput>().enabled = true;
+            //player2.GetComponent<PlayerInput>().enabled = false;
+            //player1.GetComponent<PlayerInput>().enabled = true;
         }
         else
         {
             playerPlaying = PlayerTurns.Player2;
-            player1.GetComponent<PlayerInput>().enabled = false;
-            player2.GetComponent<PlayerInput>().enabled = true;
-        }
-
-        UiManager.instance.UpdateActions(actionsInTurn);
+            //player1.GetComponent<PlayerInput>().enabled = false;
+            //player2.GetComponent<PlayerInput>().enabled = true;
+        }        
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        UiManager.instance.UpdateActions(actionsInTurn);
     }
 
     // Update is called once per frame
@@ -56,13 +54,21 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void DebugActivePlayer(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            print(playerPlaying.ToString());
+        }        
+    }
+
     public void SpendAction()
     {
         actionsInTurn -= 1;
         UiManager.instance.UpdateActions(actionsInTurn);
-        if (onActionPassed != null)
+        if (onPlayedMoved != null)
         {
-            onActionPassed();
+            onPlayedMoved();
         }
         
         if (actionsInTurn <= 0)
@@ -73,21 +79,43 @@ public class GameManager : MonoBehaviour
 
     public void TurnEnd()
     {
-        if (playerPlaying == PlayerTurns.Player1)
+        StartCoroutine(TurnSwitchAnimation(playerPlaying));
+        playerPlaying = PlayerTurns.transitioning;        
+        /*if (playerPlaying == PlayerTurns.Player1)
         {
             playerPlaying = PlayerTurns.transitioning;
-            player1.GetComponent<PlayerInput>().enabled = false;
-            player2.GetComponent<PlayerInput>().enabled = true;
+            //player1.GetComponent<PlayerInput>().enabled = false;
+            //player2.GetComponent<PlayerInput>().enabled = true;
             playerPlaying = PlayerTurns.Player2;
         }
         else
         {
             playerPlaying = PlayerTurns.transitioning;
-            player2.GetComponent<PlayerInput>().enabled = false;
-            player1.GetComponent<PlayerInput>().enabled = true;
+            //player2.GetComponent<PlayerInput>().enabled = false;
+            //player1.GetComponent<PlayerInput>().enabled = true;
+            playerPlaying = PlayerTurns.Player1;
+        }
+        actionsInTurn = 5; //placeholder
+        UiManager.instance.UpdateActions(actionsInTurn);*/
+    }
+    public void SwitchPlayerTurns(PlayerTurns which)
+    {
+        if (which == PlayerTurns.Player1)
+        {
+            playerPlaying = PlayerTurns.Player2;
+        }
+        else
+        {
             playerPlaying = PlayerTurns.Player1;
         }
         actionsInTurn = 5; //placeholder
         UiManager.instance.UpdateActions(actionsInTurn);
+    }
+
+
+    private IEnumerator TurnSwitchAnimation(PlayerTurns which)
+    {
+        yield return new WaitForSeconds(1f);
+        SwitchPlayerTurns(which);
     }
 }
