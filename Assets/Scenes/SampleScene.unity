@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 28965313}
   - component: {fileID: 28965312}
   m_Layer: 5
-  m_Name: Special
+  m_Name: Special2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -656,7 +656,7 @@ GameObject:
   - component: {fileID: 65411361}
   - component: {fileID: 65411360}
   m_Layer: 5
-  m_Name: iconhp
+  m_Name: iconhp2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -732,7 +732,7 @@ GameObject:
   - component: {fileID: 68207034}
   - component: {fileID: 68207033}
   m_Layer: 5
-  m_Name: turn hl
+  m_Name: turn hl1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4753,7 +4753,7 @@ GameObject:
   - component: {fileID: 759088634}
   - component: {fileID: 759088633}
   m_Layer: 5
-  m_Name: turn hl
+  m_Name: turn hl2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5065,7 +5065,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3dec32c87b686045b44888718b1ea53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp1: {fileID: 1472391746}
   ActionCount1: {fileID: 1282209846}
+  hp2: {fileID: 1980569780}
   ActionCount2: {fileID: 1408042103}
 --- !u!114 &786751706
 MonoBehaviour:
@@ -5474,7 +5476,7 @@ GameObject:
   - component: {fileID: 862491555}
   - component: {fileID: 862491554}
   m_Layer: 5
-  m_Name: portrait
+  m_Name: portrait2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5907,6 +5909,8 @@ MonoBehaviour:
   rb: {fileID: 958914151}
   whichPlayer: 1
   tileOn: {fileID: 0}
+  moveDuration: 0.5
+  hp: 3
 --- !u!114 &958914154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6258,7 +6262,7 @@ GameObject:
   - component: {fileID: 991981885}
   - component: {fileID: 991981884}
   m_Layer: 5
-  m_Name: Move
+  m_Name: Move2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6706,7 +6710,7 @@ GameObject:
   - component: {fileID: 1114519051}
   - component: {fileID: 1114519050}
   m_Layer: 5
-  m_Name: Special
+  m_Name: Special1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7210,7 +7214,7 @@ GameObject:
   - component: {fileID: 1282209847}
   - component: {fileID: 1282209846}
   m_Layer: 5
-  m_Name: Actions
+  m_Name: Actions1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8239,7 +8243,7 @@ GameObject:
   - component: {fileID: 1408042104}
   - component: {fileID: 1408042103}
   m_Layer: 5
-  m_Name: Actions
+  m_Name: Actions2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8742,7 +8746,7 @@ GameObject:
   - component: {fileID: 1472391747}
   - component: {fileID: 1472391746}
   m_Layer: 5
-  m_Name: hp
+  m_Name: hp1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9303,7 +9307,7 @@ GameObject:
   - component: {fileID: 1557785994}
   - component: {fileID: 1557785993}
   m_Layer: 5
-  m_Name: portrait
+  m_Name: portrait1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9520,6 +9524,8 @@ MonoBehaviour:
   rb: {fileID: 1570810284}
   whichPlayer: 0
   tileOn: {fileID: 0}
+  moveDuration: 0.5
+  hp: 3
 --- !u!50 &1570810284
 Rigidbody2D:
   serializedVersion: 4
@@ -10367,7 +10373,7 @@ GameObject:
   - component: {fileID: 1811681684}
   - component: {fileID: 1811681683}
   m_Layer: 5
-  m_Name: Shoot
+  m_Name: Shoot2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11154,7 +11160,7 @@ GameObject:
   - component: {fileID: 1965251973}
   - component: {fileID: 1965251972}
   m_Layer: 5
-  m_Name: Move
+  m_Name: Move1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11367,7 +11373,7 @@ GameObject:
   - component: {fileID: 1980569781}
   - component: {fileID: 1980569780}
   m_Layer: 5
-  m_Name: hp
+  m_Name: hp2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11772,7 +11778,7 @@ GameObject:
   - component: {fileID: 1993272325}
   - component: {fileID: 1993272324}
   m_Layer: 5
-  m_Name: iconhp
+  m_Name: iconhp1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12122,7 +12128,7 @@ GameObject:
   - component: {fileID: 2107099771}
   - component: {fileID: 2107099770}
   m_Layer: 5
-  m_Name: Shoot
+  m_Name: Shoot1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

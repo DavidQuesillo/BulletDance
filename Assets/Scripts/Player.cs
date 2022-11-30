@@ -10,7 +10,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private PlayerTurns whichPlayer;
     [SerializeField] private Tile tileOn;
-    [SerializeField] private float moveDuration = 0.5f;
+    [SerializeField] private float moveDuration = 0.3f;
+    [SerializeField] private int hp = 3;
     private bool moving;
     
 
@@ -51,6 +52,31 @@ public class Player : MonoBehaviour
     {
         Gizmos.DrawLine(rb.position, rb.position + Vector2.up);
     }*/
+    public PlayerTurns GetWhichPlayer()
+    {
+        return whichPlayer;
+    }
+
+    public void TakeDamage()
+    {
+        print("taking damage");
+        hp--;
+        UiManager.instance.UpdateHP(whichPlayer, hp);
+        if (hp <= 0)
+        {
+            PlayerDeath();
+        }
+    }
+    public void Instakill()
+    {
+        hp = 0;
+        PlayerDeath();
+    }
+
+    public void PlayerDeath()
+    {
+
+    }
 
     public void TrackDir(InputAction.CallbackContext ctx)
     {
@@ -71,6 +97,16 @@ public class Player : MonoBehaviour
             if (tilehit != null)
             {
                 //rb.MovePosition(tilehit.transform.position); //replace with tween
+                if (tilehit.GetComponent<Tile>().GetIfBullet())
+                {
+                    if (tilehit.GetComponent<Tile>().GetWhoseBullet() != whichPlayer)
+                    {
+                        TakeDamage();
+                        print("player stepped on");
+                        //tilehit.gameObject.SetActive(false);
+                        tilehit.GetComponent<Tile>().GetBulletOnThis().BulletDestroy();
+                    }
+                }
                 StartCoroutine(PlayerMove(tilehit.transform.position)); //here it is
 
                 tileOn.SetAsPlayerOff();
@@ -104,7 +140,8 @@ public class Player : MonoBehaviour
                 GameObject b = BulletPool.Instance.RequestPoolObject();
                 GameManager.instance.SpendAction();
                 b.transform.position = tilehit.transform.position;
-                b.GetComponent<Bullet>().BulletInit(whichPlayer, dir);
+                b.SetActive(true);
+                b.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>());
             }
         }
     }

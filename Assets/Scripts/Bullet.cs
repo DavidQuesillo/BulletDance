@@ -11,17 +11,24 @@ public class Bullet : MonoBehaviour
     private Vector2 dir;
     private bool hasToMove;
     private WaitForSeconds bulletDelay;
+    private bool outOfBounds;
+    [SerializeField] private Tile tileOn;
     [SerializeField] private float bulletMoveTimer = 1f;
 
     void Start()
     {
         bulletDelay = new WaitForSeconds(bulletMoveTimer);
+//        tileOn = Physics2D.Raycast(transform.position + (Vector3)dir, dir, 0.3f, LayerMask.GetMask("Grid")).collider.GetComponent<Tile>();
         GameManager.onPlayedMoved += AdvanceBullet;
     }
 
-    public void BulletInit(PlayerTurns whose, Vector2 flyTo)
-    {
+    public void BulletInit(PlayerTurns whose, Vector2 flyTo, Tile on)
+    {        
+        tileOn = on;        
         shotByWho = whose;
+        on.SetAsBulletOn(shotByWho, this);
+        outOfBounds = false;
+
         if (whose == PlayerTurns.Player1)
         {
             sr.color = Color.blue;
@@ -68,26 +75,64 @@ public class Bullet : MonoBehaviour
 
     public void AdvanceBullet()
     {
-        if (GameManager.instance.playerPlaying == shotByWho)
+        //print("advancing bullet");
+        if (GameManager.instance.playerPlaying == shotByWho || outOfBounds)
         {
             return;
         }
-        Collider2D tilehit = Physics2D.Raycast(transform.position, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+        Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir, dir, 0.3f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
         if (tilehit != null)
         {
             //rb.MovePosition(tilehit.transform.position); //replace with tween
             //StartCoroutine(BulletMovement(tilehit.transform.position, false));
-            rb.DOMove(tilehit.transform.position, 0.5f);
+
+            //rb.DOMove(tilehit.transform.position, 0.5f);
+            //)
+            tileOn.SetAsBulletOff();
+            tilehit.GetComponent<Tile>().SetAsBulletOn(shotByWho, this);
+            tileOn = tilehit.GetComponent<Tile>();
+            //StartCoroutine(BulletMovement(tilehit.transform.position, false));
+            rb.DOMove(tilehit.transform.position, 0.2f);
         }
         else
         {
             //Destroy(gameObject); //replace with tween into pooling
             //gameObject.SetActive(false); //still needs tween
             //StartCoroutine(BulletMovement(rb.position + dir, true));
-            Tween t = rb.DOMove(tilehit.transform.position, 0.5f);
-            Destroy(gameObject, 0.5f);
+
+            //Tween t = rb.DOMove(tilehit.transform.position, 0.5f);
+
+            Collider2D playerHit = Physics2D.Raycast(transform.position + (Vector3)dir, dir, 0.3f, LayerMask.GetMask("Default")).collider;
+            if (playerHit == GameManager.instance.player2 || playerHit == GameManager.instance.player1)
+            {
+                print("touchedplayer");
+                if (playerHit.GetComponent<Player>().GetWhichPlayer() != shotByWho)
+                {
+                    playerHit.GetComponent<Player>().TakeDamage();
+                    //StartCoroutine(BulletMovement(playerHit.transform.position, true));
+                    rb.DOMove(tilehit.transform.position, 0.2f).OnComplete(()=> BulletDestroy());
+                    print("Hit player");
+                }
+            }
+            else
+            {
+                //StartCoroutine(BulletMovement(rb.position + dir, true));
+                //rb.DOMove(tilehit.transform.position, 0.2f).OnComplete(() => gameObject.SetActive(false));
+                outOfBounds = true;
+                rb.DOMove(rb.position + dir, 0.2f).OnComplete(() => BulletDestroy());
+                print("bullet OoB");
+            }
+            
+            
+            //Destroy(gameObject, 0.5f);
         }
+    }
+
+    public void BulletDestroy()
+    {
+        gameObject.SetActive(false);
+        print("by bulletdestroy");
     }
 
     // Update is called once per frame
@@ -98,14 +143,37 @@ public class Bullet : MonoBehaviour
 
     private IEnumerator BulletMovement(Vector2 to, bool poolAfter)
     {
-        yield return bulletDelay;
-        Tween t = rb.DOMove(to, 0.5f);
+        /*while (!hasToMove)
+        {
+            yield return null;
+        }
+        Tween t = rb.DOMove(to, 0.2f);
+        while (hasToMove)
+        {
+            while (t.IsActive())
+            {
+                yield return null;
+            }
+            if (poolAfter)
+            {
+                gameObject.SetActive(false);
+                hasToMove = false;
+                break;
+            }
+        }*/
+        
+        //yield return bulletDelay;
+        Tween t = rb.DOMove(to, 0.2f);
+        //t.OnComplete<Bullet>(BulletDestroy);
 
         while (t.IsActive())
         {
             yield return null;
         }
-
+        if (poolAfter)
+        {
+            gameObject.SetActive(false);
+        }
         //GameManager.instance.SpendAction();
         yield break;
     }

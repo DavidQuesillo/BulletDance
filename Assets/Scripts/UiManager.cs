@@ -7,9 +7,11 @@ using TMPro;
 public class UiManager : MonoBehaviour
 {
     [Header("Player 1 side")]
+    [SerializeField] private TextMeshProUGUI hp1;
     [SerializeField] private TextMeshProUGUI ActionCount1;
 
     [Header("Player 2 side")]
+    [SerializeField] private TextMeshProUGUI hp2;
     [SerializeField] private TextMeshProUGUI ActionCount2;
 
     public static UiManager instance;
@@ -37,6 +39,17 @@ public class UiManager : MonoBehaviour
         
     }
 
+    public void UpdateHP(PlayerTurns whose, int howMuch)
+    {
+        if (whose == PlayerTurns.Player1)
+        {
+            hp1.text = howMuch.ToString();
+        }
+        else
+        {
+            hp2.text = howMuch.ToString();
+        }
+    }
     public void UpdateActions(int actionsLeft)
     {
         if (GameManager.instance.playerPlaying == PlayerTurns.Player1)

@@ -46,7 +46,7 @@ public class BulletPool : MonoBehaviour
         {
             if (objList[i].activeSelf == false)
             {
-                objList[i].SetActive(true);
+                //objList[i].SetActive(true);
                 return objList[i]; //ends the function if an inactive object is found. it returns that single object and ends the iteration
             }
         }

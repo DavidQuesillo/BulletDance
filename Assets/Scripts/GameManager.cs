@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [SerializeField] public PlayerTurns playerPlaying;
-    [SerializeField] private GameObject player1;
-    [SerializeField] private GameObject player2;
+    [SerializeField] public GameObject player1;
+    [SerializeField] public GameObject player2;
     [SerializeField] private int turn;
     [SerializeField] private int actionsInTurn;
 
@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
         if (onPlayedMoved != null)
         {
             onPlayedMoved();
+            //print("calling action");
         }
         
         if (actionsInTurn <= 0)
