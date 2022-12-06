@@ -11,6 +11,10 @@ public class Tile : MonoBehaviour
     private bool isBullet = false;
     private PlayerTurns whoseBullet;
     private Bullet bulletOnThis;
+    private List<Bullet> bullets = new List<Bullet>(16);
+    private bool hasBulletFrom1;
+    private bool hasBulletFrom2;
+
     public void TileInit(bool isOffset)
     {
         off = isOffset;
@@ -54,19 +58,36 @@ public class Tile : MonoBehaviour
     {
         return isBullet;
     }
-    public PlayerTurns GetWhoseBullet()
+
+    public bool GetIfEnemyBullet(PlayerTurns whoChecking)
     {
-        return whoseBullet;
+        //return whoseBullet;
+
+        for (int i = 0; i < bullets.Count; i++)
+        {
+            if (bullets[i].GetWhose() != whoChecking) //check bullet list for enemy bullet, if theres one it hurts
+            {
+                return true;
+            }
+        }
+        return false;
     }
     public void SetAsBulletOn(PlayerTurns whose, Bullet theBullet)
     {
         isBullet = true;
         bulletOnThis = theBullet;
+        bullets.Add(theBullet); //the new important one
         whoseBullet = whose;
     }
-    public void SetAsBulletOff()
+    public void SetAsBulletOff(Bullet toRemove)
     {
-        isBullet = false;
+        //isBullet = false;
+
+        bullets.Remove(toRemove); //removes the bullet that moved out from the list
+        if (bullets.Count == 0) //checks if theres no more bullets on the list after removing that one
+        {
+            isBullet = false;
+        }
     }
 
     public void SetAsPlayerOn(PlayerTurns who) //is it player int 1 or player int 2?

@@ -12,9 +12,10 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Tile gridTile;
 
     [SerializeField] private Transform cam;
+    [SerializeField] private GameObject bg;
     public Tile[,] grid;
 
-    void GenerateGrid()
+    public void GenerateGrid()
     {
         grid = new Tile[width, height];
 
@@ -43,6 +44,7 @@ public class GridManager : MonoBehaviour
         }
 
         cam.transform.position = new Vector3((float)width / 4, (float)height / 3 * 2, -10);
+        bg.transform.position = new Vector3((float)width / 4, (float)height / 3 * 2, 0);
     }
 
     private void Awake()

@@ -71,6 +71,7 @@ public class Bullet : MonoBehaviour
         {
             sr.transform.rotation = new Quaternion(0, 0, 315f, 0);
         }
+        //print(transform.rotation.z.ToString());
     }
 
     public void AdvanceBullet()
@@ -89,7 +90,7 @@ public class Bullet : MonoBehaviour
 
             //rb.DOMove(tilehit.transform.position, 0.5f);
             //)
-            tileOn.SetAsBulletOff();
+            tileOn.SetAsBulletOff(this);
             tilehit.GetComponent<Tile>().SetAsBulletOn(shotByWho, this);
             tileOn = tilehit.GetComponent<Tile>();
             //StartCoroutine(BulletMovement(tilehit.transform.position, false));
@@ -135,10 +136,9 @@ public class Bullet : MonoBehaviour
         print("by bulletdestroy");
     }
 
-    // Update is called once per frame
-    void Update()
+    public PlayerTurns GetWhose()
     {
-        
+        return shotByWho;
     }
 
     private IEnumerator BulletMovement(Vector2 to, bool poolAfter)

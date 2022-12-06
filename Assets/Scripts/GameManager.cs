@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject player2;
     [SerializeField] private int turn;
     [SerializeField] private int actionsInTurn;
+    [SerializeField] private int actionsRange = 6;
 
     public delegate void OnPlayerMoved();
     public static event OnPlayerMoved onPlayedMoved;
@@ -28,6 +29,40 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
 
+        
+
+
+
+        /*if (Random.value < 0.5f)
+        {
+            playerPlaying = PlayerTurns.Player1;
+            //player2.GetComponent<PlayerInput>().enabled = false;
+            //player1.GetComponent<PlayerInput>().enabled = true;
+        }
+        else
+        {
+            playerPlaying = PlayerTurns.Player2;
+            //player1.GetComponent<PlayerInput>().enabled = false;
+            //player2.GetComponent<PlayerInput>().enabled = true;
+        }*/        
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //UiManager.instance.UpdateActions(actionsInTurn);
+        InitMatch(); //placeholder
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    public void InitMatch()
+    {
+        //GridManager.instance.GenerateGrid();
         if (Random.value < 0.5f)
         {
             playerPlaying = PlayerTurns.Player1;
@@ -39,19 +74,10 @@ public class GameManager : MonoBehaviour
             playerPlaying = PlayerTurns.Player2;
             //player1.GetComponent<PlayerInput>().enabled = false;
             //player2.GetComponent<PlayerInput>().enabled = true;
-        }        
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
+        }
+        player1.SetActive(true);
+        player2.SetActive(true);
         UiManager.instance.UpdateActions(actionsInTurn);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void DebugActivePlayer(InputAction.CallbackContext ctx)
@@ -109,10 +135,22 @@ public class GameManager : MonoBehaviour
         {
             playerPlaying = PlayerTurns.Player1;
         }
-        actionsInTurn = 5; //placeholder
+        
+        //actionsInTurn = 5; //placeholder
+        ActionDice(playerPlaying);
+
         UiManager.instance.UpdateActions(actionsInTurn);
     }
 
+    public void ActionDice(PlayerTurns whoseActions)
+    {
+        /*if (whoseActions == PlayerTurns.Player1)
+        {
+            
+        }*/
+
+        actionsInTurn = Random.Range(0, actionsRange + 1);
+    }
 
     private IEnumerator TurnSwitchAnimation(PlayerTurns which)
     {

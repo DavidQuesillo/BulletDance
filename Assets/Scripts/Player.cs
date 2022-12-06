@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         if (whichPlayer == PlayerTurns.Player1)
         {
@@ -88,18 +88,19 @@ public class Player : MonoBehaviour
     {
         if (ctx.started)
         {
-            if (GameManager.instance.playerPlaying != whichPlayer || moving)
+            if (GameManager.instance.playerPlaying != whichPlayer || moving || dir == Vector2.zero)
             {
                 return;
             }
-            Collider2D tilehit = Physics2D.Raycast(transform.position, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+            Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
+            print(tilehit.gameObject.name);
             if (tilehit != null)
             {
                 //rb.MovePosition(tilehit.transform.position); //replace with tween
                 if (tilehit.GetComponent<Tile>().GetIfBullet())
                 {
-                    if (tilehit.GetComponent<Tile>().GetWhoseBullet() != whichPlayer)
+                    if (tilehit.GetComponent<Tile>().GetIfEnemyBullet(whichPlayer))
                     {
                         TakeDamage();
                         print("player stepped on");
@@ -129,11 +130,11 @@ public class Player : MonoBehaviour
     {
         if (ctx.started)
         {
-            if (GameManager.instance.playerPlaying != whichPlayer || moving)
+            if (GameManager.instance.playerPlaying != whichPlayer || moving || dir == Vector2.zero)
             {
                 return;
             }
-            Collider2D tilehit = Physics2D.Raycast(transform.position, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+            Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
             if (tilehit != null)
             {
