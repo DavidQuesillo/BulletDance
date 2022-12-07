@@ -12,8 +12,13 @@ public class Player : MonoBehaviour
     [SerializeField] private Tile tileOn;
     [SerializeField] private float moveDuration = 0.3f;
     [SerializeField] private int hp = 3;
-    private bool moving;
-    
+    private bool moving;    
+
+    [Header("Character Data")]
+    [SerializeField] private CharBase charData;
+    private int baseActions;
+    private SpecialAction special;
+
 
     // Start is called before the first frame update
     void OnEnable()
@@ -28,6 +33,10 @@ public class Player : MonoBehaviour
         }
         rb.position = tileOn.transform.position;
         tileOn.SetAsPlayerOn(this);
+
+        baseActions = charData.baseActions;
+        hp = charData.hp;
+        special = charData.charSpecial;
 
         /*print(Physics2D.Raycast(transform.position, Vector2.up, 1f, LayerMask.GetMask("Grid")).collider.gameObject.name);
         tileOn = Physics2D.Raycast(transform.position, Vector2.up, 1f, LayerMask.GetMask("Grid")).collider.gameObject.GetComponent<Tile>();
@@ -52,6 +61,10 @@ public class Player : MonoBehaviour
     {
         Gizmos.DrawLine(rb.position, rb.position + Vector2.up);
     }*/
+    public CharBase GetCharData()
+    {
+        return charData;
+    }
     public PlayerTurns GetWhichPlayer()
     {
         return whichPlayer;
@@ -139,11 +152,24 @@ public class Player : MonoBehaviour
 
             if (tilehit != null)
             {
+                if (tilehit.GetComponent<Tile>().GetIfPlayerOn()) // check if the enemy is on the tile you're shooting
+                {
+                    if (tilehit.GetComponent<Tile>().GetPlayerOnThis() == this)
+                    {
+                        Debug.Log("its the same playu7er");
+                        return;
+                    }
+                    tilehit.GetComponent<Tile>().GetPlayerOnThis().TakeDamage();
+                    GameManager.instance.SpendAction();
+                    return;
+                }
+                
+                //if theres no player, instantiate the bullet as normal
                 GameObject b = BulletPool.Instance.RequestPoolObject();
                 GameManager.instance.SpendAction();
                 b.transform.position = tilehit.transform.position;
                 b.SetActive(true);
-                b.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>());
+                b.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), this);
             }
         }
     }
@@ -164,5 +190,10 @@ public class Player : MonoBehaviour
         GameManager.instance.SpendAction();
         moving = false;
         yield break;
+    }
+
+    public void UseSpecial()
+    {
+        special.ActivateSpecial();
     }
 }

@@ -11,6 +11,7 @@ public class PanelsManager : MonoBehaviour
     [SerializeField] private GameObject game;
     [SerializeField] private GameObject result;
     
+    [Header("Default Panels Buttons")]
     [SerializeField] private GameObject returnButton;
     [SerializeField] private GameObject playButton;
 

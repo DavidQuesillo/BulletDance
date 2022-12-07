@@ -8,7 +8,8 @@ public class Bullet : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private SpriteRenderer sr;
     public PlayerTurns shotByWho = PlayerTurns.Player1;
-    private Vector2 dir;
+    private Player shooter;
+    [SerializeField] private Vector2 dir;
     private bool hasToMove;
     private WaitForSeconds bulletDelay;
     private bool outOfBounds;
@@ -23,13 +24,13 @@ public class Bullet : MonoBehaviour
         GameManager.onMatchEnd += BulletDestroy;
     }
 
-    public void BulletInit(PlayerTurns whose, Vector2 flyTo, Tile on)
+    public void BulletInit(PlayerTurns whose, Vector2 flyTo, Tile on, Player fromWho)
     {        
         tileOn = on;        
         shotByWho = whose;
         on.SetAsBulletOn(shotByWho, this);
         outOfBounds = false;
-
+        shooter = fromWho;
         if (whose == PlayerTurns.Player1)
         {
             sr.color = Color.blue;
@@ -82,7 +83,7 @@ public class Bullet : MonoBehaviour
         {
             return;
         }
-        Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 0.3f, LayerMask.GetMask("Grid"), -0.5f).collider;
+        Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
         if (tilehit != null)
         {
@@ -97,8 +98,17 @@ public class Bullet : MonoBehaviour
 
             if (tileOn.GetIfPlayerOn())
             {
-                tileOn.GetPlayerOnThis().TakeDamage();
-                gameObject.SetActive(false);
+                if (tileOn.GetPlayerOnThis() == shooter)
+                {
+                    Debug.Log("this one doin gamage");
+                }
+                else
+                {
+                    print("damage through here");
+                    tileOn.GetPlayerOnThis().TakeDamage();
+                    gameObject.SetActive(false);
+                }
+                
             }
 
             //StartCoroutine(BulletMovement(tilehit.transform.position, false));
@@ -106,6 +116,7 @@ public class Bullet : MonoBehaviour
         }
         else
         {
+            tileOn.SetAsBulletOff(this);
             //Destroy(gameObject); //replace with tween into pooling
             //gameObject.SetActive(false); //still needs tween
             //StartCoroutine(BulletMovement(rb.position + dir, true));
@@ -141,7 +152,7 @@ public class Bullet : MonoBehaviour
     public void BulletDestroy()
     {
         gameObject.SetActive(false);
-        print("by bulletdestroy");
+        //print("by bulletdestroy");
     }
 
     public PlayerTurns GetWhose()

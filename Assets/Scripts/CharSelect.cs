@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class CharSelect : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    public void StartGame()
     {
-        
-    }
+        PanelsManager.instance.StartGame();
+        GameManager.instance.InitMatch();
+        //will be filled with data later
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

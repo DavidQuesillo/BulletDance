@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public PlayerTurns playerPlaying;
     [SerializeField] public GameObject player1;
     [SerializeField] public GameObject player2;
-    [SerializeField] private int turn;
+    [SerializeField] private int turn = 1;
     [SerializeField] private int actionsInTurn;
     [SerializeField] private int actionsRange = 6;
 
@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
     {
         //UiManager.instance.UpdateActions(actionsInTurn);
         
-        InitMatch(); //placeholder
+        //InitMatch(); //placeholder
     }
 
     // Update is called once per frame
@@ -88,15 +88,20 @@ public class GameManager : MonoBehaviour
         player2.SetActive(true);
                 
         UiManager.instance.UpdateActions(actionsInTurn); //display actions of the player
+        UiManager.instance.UpdateTurn(turn, playerPlaying);
+        UiManager.instance.UpdateHP(PlayerTurns.Player1, player1.GetComponent<Player>().GetCharData().hp);
+        UiManager.instance.UpdateHP(PlayerTurns.Player2, player2.GetComponent<Player>().GetCharData().hp);
+        UiManager.instance.ShowCharatersData(player1.GetComponent<Player>().GetCharData(), PlayerTurns.Player1);
+        UiManager.instance.ShowCharatersData(player2.GetComponent<Player>().GetCharData(), PlayerTurns.Player2);
     }
 
-    public void DebugActivePlayer(InputAction.CallbackContext ctx)
+    /*public void DebugActivePlayer(InputAction.CallbackContext ctx)
     {
         if (ctx.started)
         {
             print(playerPlaying.ToString());
         }        
-    }
+    }*/
 
     public void SpendAction()
     {
@@ -117,7 +122,9 @@ public class GameManager : MonoBehaviour
     public void TurnEnd()
     {
         StartCoroutine(TurnSwitchAnimation(playerPlaying));
-        playerPlaying = PlayerTurns.transitioning;        
+        playerPlaying = PlayerTurns.transitioning;
+        turn++;
+        
         /*if (playerPlaying == PlayerTurns.Player1)
         {
             playerPlaying = PlayerTurns.transitioning;
@@ -145,7 +152,8 @@ public class GameManager : MonoBehaviour
         {
             playerPlaying = PlayerTurns.Player1;
         }
-        
+        UiManager.instance.UpdateTurn(turn, playerPlaying);
+
         //actionsInTurn = 5; //placeholder
         ActionDice(playerPlaying);
 
@@ -175,12 +183,16 @@ public class GameManager : MonoBehaviour
 
     public void ActionDice(PlayerTurns whoseActions)
     {
-        /*if (whoseActions == PlayerTurns.Player1)
+        if (whoseActions == PlayerTurns.Player1)
         {
-            
-        }*/
+            actionsInTurn = player1.GetComponent<Player>().GetCharData().baseActions + Random.Range(1, actionsRange + 1);
+        }
+        else
+        {
+            actionsInTurn = player2.GetComponent<Player>().GetCharData().baseActions + Random.Range(1, actionsRange + 1);
+        }
 
-        actionsInTurn = Random.Range(1, actionsRange + 1);
+        //actionsInTurn = Random.Range(1, actionsRange + 1);
     }
 
     private IEnumerator TurnSwitchAnimation(PlayerTurns which)

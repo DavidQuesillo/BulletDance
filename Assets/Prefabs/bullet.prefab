@@ -97,6 +97,7 @@ MonoBehaviour:
   rb: {fileID: 8644501366420148018}
   sr: {fileID: 8644501366698889561}
   shotByWho: 0
+  dir: {x: 0, y: 0}
   tileOn: {fileID: 0}
   bulletMoveTimer: 1
 --- !u!1 &8644501366698889562
@@ -124,8 +125,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8644501366698889562}
   m_LocalRotation: {x: -0, y: -0, z: 0.0026067533, w: 0.9999966}
-  m_LocalPosition: {x: 0.105, y: 0, z: 0}
-  m_LocalScale: {x: 0.18600248, y: 0.18600248, z: 0.18600248}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.38367, y: 0.38367, z: 0.38367}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8644501366420148031}
