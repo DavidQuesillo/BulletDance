@@ -7,9 +7,10 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer sRend;
     //[SerializeField] private GameObject hl;
     public bool off;
-    public PlayerTurns isPlayer;
+    public bool isPlayer;
     private bool isBullet = false;
     private PlayerTurns whoseBullet;
+    private Player playerOnThis;
     private Bullet bulletOnThis;
     private List<Bullet> bullets = new List<Bullet>(16);
     private bool hasBulletFrom1;
@@ -42,13 +43,21 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameManager.onMatchEnd += EraseGrid;
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public bool GetIfPlayerOn()
+    {
+        return isPlayer;
+    }
+    public Player GetPlayerOnThis()
+    {
+        return playerOnThis;
     }
     public Bullet GetBulletOnThis()
     {
@@ -90,14 +99,21 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void SetAsPlayerOn(PlayerTurns who) //is it player int 1 or player int 2?
+    public void SetAsPlayerOn(Player who) //is it player int 1 or player int 2?
     {
-        isPlayer = who;
+        isPlayer = true;
+        playerOnThis = who;
         //transform.position = new Vector3(transform.position.x, transform.position.y, -1);
     }
     public void SetAsPlayerOff() //no player means player zero (??????)
     {
-        isPlayer = 0;
+        isPlayer = false;
+        playerOnThis = null;
         //transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+    }
+
+    private void EraseGrid()
+    {
+        Destroy(gameObject);
     }
 }

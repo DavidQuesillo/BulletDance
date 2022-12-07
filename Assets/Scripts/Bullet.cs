@@ -20,6 +20,7 @@ public class Bullet : MonoBehaviour
         bulletDelay = new WaitForSeconds(bulletMoveTimer);
 //        tileOn = Physics2D.Raycast(transform.position + (Vector3)dir, dir, 0.3f, LayerMask.GetMask("Grid")).collider.GetComponent<Tile>();
         GameManager.onPlayedMoved += AdvanceBullet;
+        GameManager.onMatchEnd += BulletDestroy;
     }
 
     public void BulletInit(PlayerTurns whose, Vector2 flyTo, Tile on)
@@ -81,7 +82,7 @@ public class Bullet : MonoBehaviour
         {
             return;
         }
-        Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir, dir, 0.3f, LayerMask.GetMask("Grid"), -0.5f).collider;
+        Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 0.3f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
         if (tilehit != null)
         {
@@ -93,6 +94,13 @@ public class Bullet : MonoBehaviour
             tileOn.SetAsBulletOff(this);
             tilehit.GetComponent<Tile>().SetAsBulletOn(shotByWho, this);
             tileOn = tilehit.GetComponent<Tile>();
+
+            if (tileOn.GetIfPlayerOn())
+            {
+                tileOn.GetPlayerOnThis().TakeDamage();
+                gameObject.SetActive(false);
+            }
+
             //StartCoroutine(BulletMovement(tilehit.transform.position, false));
             rb.DOMove(tilehit.transform.position, 0.2f);
         }

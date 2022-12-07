@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
             tileOn = GridManager.instance.grid[GridManager.instance.width / 2 - 1, 1];
         }
         rb.position = tileOn.transform.position;
-        tileOn.SetAsPlayerOn(whichPlayer);
+        tileOn.SetAsPlayerOn(this);
 
         /*print(Physics2D.Raycast(transform.position, Vector2.up, 1f, LayerMask.GetMask("Grid")).collider.gameObject.name);
         tileOn = Physics2D.Raycast(transform.position, Vector2.up, 1f, LayerMask.GetMask("Grid")).collider.gameObject.GetComponent<Tile>();
@@ -75,7 +75,8 @@ public class Player : MonoBehaviour
 
     public void PlayerDeath()
     {
-
+        //placeholder
+        GameManager.instance.MatchEnd(whichPlayer);
     }
 
     public void TrackDir(InputAction.CallbackContext ctx)
@@ -86,7 +87,7 @@ public class Player : MonoBehaviour
 
     public void MoveInDir(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
+        if (ctx.started && gameObject.activeInHierarchy)
         {
             if (GameManager.instance.playerPlaying != whichPlayer || moving || dir == Vector2.zero)
             {
@@ -114,7 +115,7 @@ public class Player : MonoBehaviour
                 //tilehit.GetComponent<Tile>().SetAsPlayerOn(whichPlayer);
 
                 tileOn = tilehit.GetComponent<Tile>();
-                tileOn.SetAsPlayerOn(whichPlayer);
+                tileOn.SetAsPlayerOn(this);
                 //GameManager.instance.SpendAction();
                 //print("moved to " + tilehit.name);
             }
@@ -128,7 +129,7 @@ public class Player : MonoBehaviour
 
     public void ShootInDir(InputAction.CallbackContext ctx)
     {
-        if (ctx.started)
+        if (ctx.started && gameObject.activeInHierarchy)
         {
             if (GameManager.instance.playerPlaying != whichPlayer || moving || dir == Vector2.zero)
             {

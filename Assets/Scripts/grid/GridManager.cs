@@ -57,7 +57,8 @@ public class GridManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        GenerateGrid();
+        
+        //GenerateGrid(); //placeholder
     }
 
     // Start is called before the first frame update

@@ -15,8 +15,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int actionsInTurn;
     [SerializeField] private int actionsRange = 6;
 
+    private Player winner; //may not stay Player class
+
     public delegate void OnPlayerMoved();
     public static event OnPlayerMoved onPlayedMoved;
+
+    public delegate void OnMatchEnd();
+    public static event OnMatchEnd onMatchEnd;
 
     private void Awake()
     {
@@ -51,6 +56,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         //UiManager.instance.UpdateActions(actionsInTurn);
+        
         InitMatch(); //placeholder
     }
 
@@ -75,9 +81,13 @@ public class GameManager : MonoBehaviour
             //player1.GetComponent<PlayerInput>().enabled = false;
             //player2.GetComponent<PlayerInput>().enabled = true;
         }
-        player1.SetActive(true);
+
+        GridManager.instance.GenerateGrid(); //first generate grid
+
+        player1.SetActive(true); //then players are enabled and place themselves in grid
         player2.SetActive(true);
-        UiManager.instance.UpdateActions(actionsInTurn);
+                
+        UiManager.instance.UpdateActions(actionsInTurn); //display actions of the player
     }
 
     public void DebugActivePlayer(InputAction.CallbackContext ctx)
@@ -142,6 +152,27 @@ public class GameManager : MonoBehaviour
         UiManager.instance.UpdateActions(actionsInTurn);
     }
 
+    public void MatchEnd(PlayerTurns whoLost)
+    {
+        if (whoLost == PlayerTurns.Player1)
+        {
+            winner = player2.GetComponent<Player>();
+        }
+        else
+        {
+            winner = player1.GetComponent<Player>();
+        }
+        //disable players
+        player1.SetActive(false);
+        player2.SetActive(false);
+        
+        //call event for anything else to close
+        onMatchEnd();
+        
+        //switch to result screen
+        PanelsManager.instance.ShowResult();
+    }
+
     public void ActionDice(PlayerTurns whoseActions)
     {
         /*if (whoseActions == PlayerTurns.Player1)
@@ -149,7 +180,7 @@ public class GameManager : MonoBehaviour
             
         }*/
 
-        actionsInTurn = Random.Range(0, actionsRange + 1);
+        actionsInTurn = Random.Range(1, actionsRange + 1);
     }
 
     private IEnumerator TurnSwitchAnimation(PlayerTurns which)
