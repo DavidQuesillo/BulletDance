@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
+public enum bulletDirs { L, LU, U, UR, R, DR, D, LR}
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private SpriteRenderer sr;
+    [SerializeField] private Animator anim;
     public PlayerTurns shotByWho = PlayerTurns.Player1;
     private Player shooter;
     [SerializeField] private Vector2 dir;
@@ -26,6 +28,7 @@ public class Bullet : MonoBehaviour
 
     public void BulletInit(PlayerTurns whose, Vector2 flyTo, Tile on, Player fromWho)
     {        
+        hasToMove = false;
         tileOn = on;        
         shotByWho = whose;
         on.SetAsBulletOn(shotByWho, this);
@@ -43,35 +46,59 @@ public class Bullet : MonoBehaviour
         dir = flyTo;
         if (dir == Vector2.right)
         {
-            sr.transform.rotation = Quaternion.identity;
+            //sr.transform.rotation = Quaternion.identity;
+            anim.Play("bulletH");
+            sr.flipX = false;
+            sr.flipY = false;
         }
         else if (dir == Vector2.right + Vector2.up)
         {
-            sr.transform.rotation = new Quaternion(0, 0, 45f, 0);
+            //sr.transform.rotation = new Quaternion(0, 0, 45f, 0);
+            anim.Play("bulletD");
+            sr.flipX = false;
+            sr.flipY = false;
         }
         else if (dir == Vector2.up)
         {
-            sr.transform.rotation = new Quaternion(0, 0, 90f, 0);
+            //sr.transform.rotation = new Quaternion(0, 0, 90f, 0);
+            anim.Play("bulletV");
+            sr.flipX = false;
+            sr.flipY = false;
         }
         else if (dir == Vector2.left + Vector2.up)
         {
-            sr.transform.rotation = new Quaternion(0, 0, 135f, 0);
+            //sr.transform.rotation = new Quaternion(0, 0, 135f, 0);
+            anim.Play("bulletD");
+            sr.flipX = true;
+            sr.flipY = false;
         }
         else if (dir == Vector2.left)
         {
-            sr.transform.rotation = new Quaternion(0, 0, 180f, 0);
+            //sr.transform.rotation = new Quaternion(0, 0, 180f, 0);
+            anim.Play("bulletH");
+            sr.flipX = true;
+            sr.flipY = false;
         }
         else if (dir == Vector2.left + Vector2.down)
         {
-            sr.transform.rotation = new Quaternion(0, 0, 225f, 0);
+            //sr.transform.rotation = new Quaternion(0, 0, 225f, 0);
+            anim.Play("bulletD");
+            sr.flipX = true;
+            sr.flipY = true;
         }
         else if (dir == Vector2.down)
         {
-            sr.transform.rotation = new Quaternion(0, 0, 270f, 0);
+            //sr.transform.rotation = new Quaternion(0, 0, 270f, 0);
+            anim.Play("bulletV");
+            sr.flipX = false;
+            sr.flipY = true;
         }
         else if (dir == Vector2.down + Vector2.right)
         {
-            sr.transform.rotation = new Quaternion(0, 0, 315f, 0);
+            //sr.transform.rotation = new Quaternion(0, 0, 315f, 0);
+            anim.Play("bulletD");
+            sr.flipX = false;
+            sr.flipY = true;
         }
         //print(transform.rotation.z.ToString());
     }
@@ -79,8 +106,9 @@ public class Bullet : MonoBehaviour
     public void AdvanceBullet()
     {
         //print("advancing bullet");
-        if (GameManager.instance.playerPlaying == shotByWho || outOfBounds)
+        if (GameManager.instance.playerPlaying == shotByWho || outOfBounds || !hasToMove)
         {
+            hasToMove = true;
             return;
         }
         Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
@@ -106,7 +134,7 @@ public class Bullet : MonoBehaviour
                 {
                     print("damage through here");
                     tileOn.GetPlayerOnThis().TakeDamage();
-                    gameObject.SetActive(false);
+                    BulletDestroy();
                 }
                 
             }
@@ -116,7 +144,7 @@ public class Bullet : MonoBehaviour
         }
         else
         {
-            tileOn.SetAsBulletOff(this);
+            //tileOn.SetAsBulletOff(this); //done again in destroy function
             //Destroy(gameObject); //replace with tween into pooling
             //gameObject.SetActive(false); //still needs tween
             //StartCoroutine(BulletMovement(rb.position + dir, true));
@@ -141,6 +169,7 @@ public class Bullet : MonoBehaviour
                 //rb.DOMove(tilehit.transform.position, 0.2f).OnComplete(() => gameObject.SetActive(false));
                 outOfBounds = true;
                 rb.DOMove(rb.position + dir, 0.2f).OnComplete(() => BulletDestroy());
+                
                 print("bullet OoB");
             }
             
@@ -151,6 +180,8 @@ public class Bullet : MonoBehaviour
 
     public void BulletDestroy()
     {
+
+        tileOn.SetAsBulletOff(this);
         gameObject.SetActive(false);
         //print("by bulletdestroy");
     }
@@ -160,6 +191,7 @@ public class Bullet : MonoBehaviour
         return shotByWho;
     }
 
+    //replace by tween lambda
     private IEnumerator BulletMovement(Vector2 to, bool poolAfter)
     {
         /*while (!hasToMove)

@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
 {
     private Vector2 dir;
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Animator anim;
+    [SerializeField] private SpriteRenderer sr;
     [SerializeField] private PlayerTurns whichPlayer;
     [SerializeField] private Tile tileOn;
     [SerializeField] private float moveDuration = 0.3f;
@@ -38,6 +40,7 @@ public class Player : MonoBehaviour
         hp = charData.hp;
         special = charData.charSpecial;
 
+        CheckFacing();
         /*print(Physics2D.Raycast(transform.position, Vector2.up, 1f, LayerMask.GetMask("Grid")).collider.gameObject.name);
         tileOn = Physics2D.Raycast(transform.position, Vector2.up, 1f, LayerMask.GetMask("Grid")).collider.gameObject.GetComponent<Tile>();
 
@@ -92,6 +95,48 @@ public class Player : MonoBehaviour
         GameManager.instance.MatchEnd(whichPlayer);
     }
 
+    public void CheckFacing()
+    {
+        Vector3 p;
+        if (whichPlayer == PlayerTurns.Player1)
+        {
+            p = GameManager.instance.player2.transform.position;            
+        }
+        else
+        {
+            p = GameManager.instance.player1.transform.position;
+        }
+
+        if (Vector3.Distance(new Vector3(p.x, 0f, 0f), new Vector3(transform.position.x, 0f, 0f)) 
+                >= 
+                    Vector3.Distance(new Vector3(0f, p.y, 0f), new Vector3(0f, transform.position.y, 0)))
+        {
+            if (p.x > transform.position.x)
+            {
+                anim.Play("FaceH");
+                sr.flipX = false;
+            }
+            else
+            {
+                anim.Play("FaceH");
+                sr.flipX = true;
+            }
+        }
+        else
+        {
+            if (p.y > transform.position.y)
+            {
+                anim.Play("FaceUp");
+                sr.flipX = false;
+            }
+            else
+            {
+                anim.Play("FaceDown");
+                sr.flipX = false;
+            }
+        }
+    }
+
     public void TrackDir(InputAction.CallbackContext ctx)
     {
         dir = ctx.ReadValue<Vector2>();
@@ -122,13 +167,17 @@ public class Player : MonoBehaviour
                         tilehit.GetComponent<Tile>().GetBulletOnThis().BulletDestroy();
                     }
                 }
-                StartCoroutine(PlayerMove(tilehit.transform.position)); //here it is
+                //StartCoroutine(PlayerMove(tilehit.transform.position)); //here it is
+                moving = true;
+                rb.DOMove(tilehit.transform.position, 0.2f).OnComplete(() => FinalizeMove());
 
                 tileOn.SetAsPlayerOff();
                 //tilehit.GetComponent<Tile>().SetAsPlayerOn(whichPlayer);
 
                 tileOn = tilehit.GetComponent<Tile>();
                 tileOn.SetAsPlayerOn(this);
+
+                CheckFacing();
                 //GameManager.instance.SpendAction();
                 //print("moved to " + tilehit.name);
             }
@@ -170,11 +219,22 @@ public class Player : MonoBehaviour
                 b.transform.position = tilehit.transform.position;
                 b.SetActive(true);
                 b.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), this);
+                
+                
+                
+                print(dir.ToString()); //debug what dir the bullet is getting
             }
         }
     }
 
-    private IEnumerator PlayerMove(Vector2 to)
+    private void FinalizeMove()
+    {
+        moving = false;
+        GameManager.instance.SpendAction();
+        //this func replaces what happens in playermove coroutine
+    }
+
+    /*private IEnumerator PlayerMove(Vector2 to)
     {
         Tween t = rb.DOMove(to, moveDuration);
         moving = true;
@@ -182,7 +242,7 @@ public class Player : MonoBehaviour
         /*while (t.IsActive())
         {
             yield return null;
-        }*/
+        }/////////*
         yield return t.WaitForCompletion();
 
         yield return new WaitForSeconds(0.5f);
@@ -190,7 +250,7 @@ public class Player : MonoBehaviour
         GameManager.instance.SpendAction();
         moving = false;
         yield break;
-    }
+    }*/
 
     public void UseSpecial()
     {

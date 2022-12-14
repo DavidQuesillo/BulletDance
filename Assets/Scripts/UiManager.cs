@@ -69,15 +69,18 @@ public class UiManager : MonoBehaviour
             hp2.text = howMuch.ToString();
         }
     }
-    public void UpdateActions(int actionsLeft)
+    public void UpdateActions(int actionsLeft, PlayerTurns whoseActions)
     {
-        if (GameManager.instance.playerPlaying == PlayerTurns.Player1)
+        print("func update ran");
+        if (whoseActions == PlayerTurns.Player1)
         {
             ActionCount1.text = actionsLeft.ToString();
+            print("1 ran");
         }
         else
         {
             ActionCount2.text = actionsLeft.ToString();
+            print("2 ran");
         }
     }
     public void UpdateTurn(int turnNum, PlayerTurns turnWho)

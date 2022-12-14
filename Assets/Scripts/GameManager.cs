@@ -68,7 +68,8 @@ public class GameManager : MonoBehaviour
 
     public void InitMatch()
     {
-        //GridManager.instance.GenerateGrid();
+        print("initing match");
+        //randomizes which player starts
         if (Random.value < 0.5f)
         {
             playerPlaying = PlayerTurns.Player1;
@@ -87,7 +88,7 @@ public class GameManager : MonoBehaviour
         player1.SetActive(true); //then players are enabled and place themselves in grid
         player2.SetActive(true);
                 
-        UiManager.instance.UpdateActions(actionsInTurn); //display actions of the player
+        UiManager.instance.UpdateActions(actionsInTurn, playerPlaying); //display actions of the player
         UiManager.instance.UpdateTurn(turn, playerPlaying);
         UiManager.instance.UpdateHP(PlayerTurns.Player1, player1.GetComponent<Player>().GetCharData().hp);
         UiManager.instance.UpdateHP(PlayerTurns.Player2, player2.GetComponent<Player>().GetCharData().hp);
@@ -106,7 +107,7 @@ public class GameManager : MonoBehaviour
     public void SpendAction()
     {
         actionsInTurn -= 1;
-        UiManager.instance.UpdateActions(actionsInTurn);
+        UiManager.instance.UpdateActions(actionsInTurn, playerPlaying);
         if (onPlayedMoved != null)
         {
             onPlayedMoved();
@@ -157,7 +158,7 @@ public class GameManager : MonoBehaviour
         //actionsInTurn = 5; //placeholder
         ActionDice(playerPlaying);
 
-        UiManager.instance.UpdateActions(actionsInTurn);
+        UiManager.instance.UpdateActions(actionsInTurn, playerPlaying);
     }
 
     public void MatchEnd(PlayerTurns whoLost)

@@ -12,7 +12,7 @@ public class Tile : MonoBehaviour
     private PlayerTurns whoseBullet;
     private Player playerOnThis;
     private Bullet bulletOnThis;
-    private List<Bullet> bullets = new List<Bullet>(16);
+    [SerializeField] private List<Bullet> bullets = new List<Bullet>(16);
     private bool hasBulletFrom1;
     private bool hasBulletFrom2;
 
@@ -87,6 +87,14 @@ public class Tile : MonoBehaviour
         bulletOnThis = theBullet;
         bullets.Add(theBullet); //the new important one
         whoseBullet = whose;
+        if (whose == PlayerTurns.Player1)
+        {
+            hasBulletFrom1 = true;
+        }
+        else
+        {
+            hasBulletFrom2 = true;
+        }
     }
     public void SetAsBulletOff(Bullet toRemove)
     {
@@ -96,6 +104,23 @@ public class Tile : MonoBehaviour
         if (bullets.Count == 0) //checks if theres no more bullets on the list after removing that one
         {
             isBullet = false;
+        }
+        else //WORTHLESS?????????????????????????????????????????????????????
+        {
+            for (int i = 0; i < bullets.Count; i++)
+            {
+                hasBulletFrom1 = false;
+                hasBulletFrom2 = false;
+
+                if (bullets[i].GetWhose() == PlayerTurns.Player1)
+                {
+                    hasBulletFrom1 = true;
+                }
+                if (bullets[i].GetWhose() == PlayerTurns.Player2)
+                {
+                    hasBulletFrom2 = true;
+                }
+            }
         }
     }
 

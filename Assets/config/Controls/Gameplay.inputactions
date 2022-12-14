@@ -10,7 +10,7 @@
                     "type": "Value",
                     "id": "8b95295c-2140-4cdc-87d2-19c35df7abe9",
                     "expectedControlType": "Vector2",
-                    "processors": "NormalizeVector2",
+                    "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
@@ -64,7 +64,7 @@
                 {
                     "name": "wasd",
                     "id": "24e34433-12b5-4629-a7bb-c4031bd11b7c",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -119,7 +119,7 @@
                 {
                     "name": "arrows",
                     "id": "b8c0f07b-1013-4732-9b0b-d5813cc314d1",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -174,7 +174,7 @@
                 {
                     "name": "stick",
                     "id": "a253d2af-764b-4a95-9083-a366a802d14f",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -229,7 +229,7 @@
                 {
                     "name": "dpad",
                     "id": "54076b5a-7ed2-4878-83db-5b6cc28250db",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -445,7 +445,7 @@
                     "id": "b155a33a-aace-4455-93ea-3b7235e125d5",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 },
                 {
