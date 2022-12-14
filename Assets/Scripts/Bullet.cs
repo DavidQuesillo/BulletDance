@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public enum bulletDirs { L, LU, U, UR, R, DR, D, LR}
+public enum bulletDirs { L, LU, U, UR, R, DR, D, LD}
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
@@ -12,6 +12,7 @@ public class Bullet : MonoBehaviour
     public PlayerTurns shotByWho = PlayerTurns.Player1;
     private Player shooter;
     [SerializeField] private Vector2 dir;
+    [SerializeField] private bulletDirs LetterDir;
     private bool hasToMove;
     private WaitForSeconds bulletDelay;
     private bool outOfBounds;
@@ -24,6 +25,7 @@ public class Bullet : MonoBehaviour
 //        tileOn = Physics2D.Raycast(transform.position + (Vector3)dir, dir, 0.3f, LayerMask.GetMask("Grid")).collider.GetComponent<Tile>();
         GameManager.onPlayedMoved += AdvanceBullet;
         GameManager.onMatchEnd += BulletDestroy;
+        //GameManager.onTurnSwitch += BecomeMovable;
     }
 
     public void BulletInit(PlayerTurns whose, Vector2 flyTo, Tile on, Player fromWho)
@@ -31,7 +33,7 @@ public class Bullet : MonoBehaviour
         hasToMove = false;
         tileOn = on;        
         shotByWho = whose;
-        on.SetAsBulletOn(shotByWho, this);
+        
         outOfBounds = false;
         shooter = fromWho;
         if (whose == PlayerTurns.Player1)
@@ -50,6 +52,8 @@ public class Bullet : MonoBehaviour
             anim.Play("bulletH");
             sr.flipX = false;
             sr.flipY = false;
+
+            LetterDir = bulletDirs.R;
         }
         else if (dir == Vector2.right + Vector2.up)
         {
@@ -57,6 +61,8 @@ public class Bullet : MonoBehaviour
             anim.Play("bulletD");
             sr.flipX = false;
             sr.flipY = false;
+
+            LetterDir = bulletDirs.UR;
         }
         else if (dir == Vector2.up)
         {
@@ -64,6 +70,8 @@ public class Bullet : MonoBehaviour
             anim.Play("bulletV");
             sr.flipX = false;
             sr.flipY = false;
+
+            LetterDir = bulletDirs.U;
         }
         else if (dir == Vector2.left + Vector2.up)
         {
@@ -71,6 +79,8 @@ public class Bullet : MonoBehaviour
             anim.Play("bulletD");
             sr.flipX = true;
             sr.flipY = false;
+
+            LetterDir = bulletDirs.LU;
         }
         else if (dir == Vector2.left)
         {
@@ -78,6 +88,8 @@ public class Bullet : MonoBehaviour
             anim.Play("bulletH");
             sr.flipX = true;
             sr.flipY = false;
+
+            LetterDir = bulletDirs.L;
         }
         else if (dir == Vector2.left + Vector2.down)
         {
@@ -85,6 +97,8 @@ public class Bullet : MonoBehaviour
             anim.Play("bulletD");
             sr.flipX = true;
             sr.flipY = true;
+
+            LetterDir = bulletDirs.LD;
         }
         else if (dir == Vector2.down)
         {
@@ -92,6 +106,8 @@ public class Bullet : MonoBehaviour
             anim.Play("bulletV");
             sr.flipX = false;
             sr.flipY = true;
+
+            LetterDir = bulletDirs.D;
         }
         else if (dir == Vector2.down + Vector2.right)
         {
@@ -99,8 +115,22 @@ public class Bullet : MonoBehaviour
             anim.Play("bulletD");
             sr.flipX = false;
             sr.flipY = true;
+
+            LetterDir = bulletDirs.DR;
         }
+        on.SetAsBulletOn(shotByWho, this, LetterDir);
+        BecomeMovable();
         //print(transform.rotation.z.ToString());
+    }
+    public bulletDirs GetDir()
+    {
+        return LetterDir;
+    }
+
+    private void BecomeMovable()
+    {
+        if (gameObject.activeInHierarchy)
+            hasToMove = true;
     }
 
     public void AdvanceBullet()
@@ -108,7 +138,7 @@ public class Bullet : MonoBehaviour
         //print("advancing bullet");
         if (GameManager.instance.playerPlaying == shotByWho || outOfBounds || !hasToMove)
         {
-            hasToMove = true;
+            //hasToMove = true;
             return;
         }
         Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
@@ -121,7 +151,7 @@ public class Bullet : MonoBehaviour
             //rb.DOMove(tilehit.transform.position, 0.5f);
             //)
             tileOn.SetAsBulletOff(this);
-            tilehit.GetComponent<Tile>().SetAsBulletOn(shotByWho, this);
+            tilehit.GetComponent<Tile>().SetAsBulletOn(shotByWho, this, LetterDir);
             tileOn = tilehit.GetComponent<Tile>();
 
             if (tileOn.GetIfPlayerOn())
@@ -144,6 +174,10 @@ public class Bullet : MonoBehaviour
         }
         else
         {
+            outOfBounds = true;
+            rb.DOMove(rb.position + dir, 0.2f).OnComplete(() => BulletDestroy());
+
+
             //tileOn.SetAsBulletOff(this); //done again in destroy function
             //Destroy(gameObject); //replace with tween into pooling
             //gameObject.SetActive(false); //still needs tween
@@ -151,7 +185,7 @@ public class Bullet : MonoBehaviour
 
             //Tween t = rb.DOMove(tilehit.transform.position, 0.5f);
 
-            Collider2D playerHit = Physics2D.Raycast(transform.position + (Vector3)dir, dir, 0.3f, LayerMask.GetMask("Default")).collider;
+            /*Collider2D playerHit = Physics2D.Raycast(transform.position + (Vector3)dir, dir, 0.3f, LayerMask.GetMask("Default")).collider;
             if (playerHit == GameManager.instance.player2 || playerHit == GameManager.instance.player1)
             {
                 print("touchedplayer");
@@ -171,7 +205,7 @@ public class Bullet : MonoBehaviour
                 rb.DOMove(rb.position + dir, 0.2f).OnComplete(() => BulletDestroy());
                 
                 print("bullet OoB");
-            }
+            }*/
             
             
             //Destroy(gameObject, 0.5f);
@@ -183,6 +217,7 @@ public class Bullet : MonoBehaviour
 
         tileOn.SetAsBulletOff(this);
         gameObject.SetActive(false);
+        hasToMove = false;
         //print("by bulletdestroy");
     }
 

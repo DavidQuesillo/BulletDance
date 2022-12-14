@@ -153,7 +153,7 @@ public class Player : MonoBehaviour
             }
             Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
-            print(tilehit.gameObject.name);
+            //print(tilehit.gameObject.name);
             if (tilehit != null)
             {
                 //rb.MovePosition(tilehit.transform.position); //replace with tween
@@ -201,6 +201,11 @@ public class Player : MonoBehaviour
 
             if (tilehit != null)
             {
+                if (tilehit.GetComponent<Tile>().GetIfSameDirBullet(dir))
+                {
+                    print("had same dir");
+                    return;
+                }
                 if (tilehit.GetComponent<Tile>().GetIfPlayerOn()) // check if the enemy is on the tile you're shooting
                 {
                     if (tilehit.GetComponent<Tile>().GetPlayerOnThis() == this)

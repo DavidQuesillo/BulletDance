@@ -8,6 +8,7 @@ public enum PlayerTurns { Player1, Player2, transitioning}
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public bool gameStarted = false;
     [SerializeField] public PlayerTurns playerPlaying;
     [SerializeField] public GameObject player1;
     [SerializeField] public GameObject player2;
@@ -22,6 +23,9 @@ public class GameManager : MonoBehaviour
 
     public delegate void OnMatchEnd();
     public static event OnMatchEnd onMatchEnd;
+
+    public delegate void OnTurnSwitch();
+    public static event OnTurnSwitch onTurnSwitch;
 
     private void Awake()
     {
@@ -68,7 +72,9 @@ public class GameManager : MonoBehaviour
 
     public void InitMatch()
     {
-        print("initing match");
+        //print("initing match");
+        if (gameStarted) {return; }
+
         //randomizes which player starts
         if (Random.value < 0.5f)
         {
@@ -83,7 +89,9 @@ public class GameManager : MonoBehaviour
             //player2.GetComponent<PlayerInput>().enabled = true;
         }
 
-        GridManager.instance.GenerateGrid(); //first generate grid
+        //GridManager.instance.GenerateGrid(); //first generate grid COMMENTED FOR TESTING HERE IT IS CHANGE IT IF NOT WORK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        GridManager.instance.DisplayGrid();                 //IT WORKS FOR NOW
+
 
         player1.SetActive(true); //then players are enabled and place themselves in grid
         player2.SetActive(true);
@@ -94,6 +102,11 @@ public class GameManager : MonoBehaviour
         UiManager.instance.UpdateHP(PlayerTurns.Player2, player2.GetComponent<Player>().GetCharData().hp);
         UiManager.instance.ShowCharatersData(player1.GetComponent<Player>().GetCharData(), PlayerTurns.Player1);
         UiManager.instance.ShowCharatersData(player2.GetComponent<Player>().GetCharData(), PlayerTurns.Player2);
+        
+        if (playerPlaying == PlayerTurns.Player1)   { UiManager.instance.TurnSwitchAnimations(PlayerTurns.Player2); print("player1 starts"); }
+        else                                        { UiManager.instance.TurnSwitchAnimations(PlayerTurns.Player1); print("player2 starts"); }
+
+        gameStarted = true;
     }
 
     /*public void DebugActivePlayer(InputAction.CallbackContext ctx)
@@ -159,6 +172,8 @@ public class GameManager : MonoBehaviour
         ActionDice(playerPlaying);
 
         UiManager.instance.UpdateActions(actionsInTurn, playerPlaying);
+
+        if (onTurnSwitch != null) onTurnSwitch();
     }
 
     public void MatchEnd(PlayerTurns whoLost)
@@ -180,6 +195,7 @@ public class GameManager : MonoBehaviour
         
         //switch to result screen
         PanelsManager.instance.ShowResult();
+        gameStarted = false;
     }
 
     public void ActionDice(PlayerTurns whoseActions)
@@ -198,6 +214,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator TurnSwitchAnimation(PlayerTurns which)
     {
+        UiManager.instance.TurnSwitchAnimations(which);
         yield return new WaitForSeconds(1f);
         SwitchPlayerTurns(which);
     }

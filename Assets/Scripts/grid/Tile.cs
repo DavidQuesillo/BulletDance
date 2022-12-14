@@ -13,6 +13,7 @@ public class Tile : MonoBehaviour
     private Player playerOnThis;
     private Bullet bulletOnThis;
     [SerializeField] private List<Bullet> bullets = new List<Bullet>(16);
+    [SerializeField] private List<bulletDirs> dirs = new List<bulletDirs>(8);
     private bool hasBulletFrom1;
     private bool hasBulletFrom2;
 
@@ -43,7 +44,7 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.onMatchEnd += EraseGrid;
+        //GameManager.onMatchEnd += EraseGrid;
     }
 
     // Update is called once per frame
@@ -81,7 +82,78 @@ public class Tile : MonoBehaviour
         }
         return false;
     }
-    public void SetAsBulletOn(PlayerTurns whose, Bullet theBullet)
+    public bool GetIfSameDirBullet(Vector2 direction)
+    {
+        if (direction == Vector2.right)
+        {
+            if (dirs.Contains(bulletDirs.R))
+            {
+                return true;
+            }
+            return false;
+        }
+        else if (direction == Vector2.right + Vector2.up)
+        {
+            if (dirs.Contains(bulletDirs.UR))
+            {
+                return true;
+            }
+            return false;
+        }
+        else if (direction == Vector2.up)
+        {
+            if (dirs.Contains(bulletDirs.U))
+            {
+                return true;
+            }
+            return false;
+        }
+        else if (direction == Vector2.left + Vector2.up)
+        {
+            if (dirs.Contains(bulletDirs.LU))
+            {
+                return true;
+            }
+            return false;
+        }
+        else if (direction == Vector2.left)
+        {
+            if (dirs.Contains(bulletDirs.L))
+            {
+                return true;
+            }
+            return false;
+        }
+        else if (direction == Vector2.left + Vector2.down)
+        {
+            if (dirs.Contains(bulletDirs.LD))
+            {
+                return true;
+            }
+            return false;
+        }
+        else if (direction == Vector2.down)
+        {
+            if (dirs.Contains(bulletDirs.D))
+            {
+                return true;
+            }
+            return false;
+        }
+        else if (direction == Vector2.down + Vector2.right)
+        {
+            if (dirs.Contains(bulletDirs.DR))
+            {
+                return true;
+            }
+            return false;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public void SetAsBulletOn(PlayerTurns whose, Bullet theBullet, bulletDirs bulletDir)
     {
         isBullet = true;
         bulletOnThis = theBullet;
@@ -95,11 +167,12 @@ public class Tile : MonoBehaviour
         {
             hasBulletFrom2 = true;
         }
+        dirs.Add(bulletDir);
     }
     public void SetAsBulletOff(Bullet toRemove)
     {
         //isBullet = false;
-
+        dirs.Remove(toRemove.GetDir());
         bullets.Remove(toRemove); //removes the bullet that moved out from the list
         if (bullets.Count == 0) //checks if theres no more bullets on the list after removing that one
         {

@@ -13,6 +13,8 @@ public class GridManager : MonoBehaviour
 
     [SerializeField] private Transform cam;
     [SerializeField] private GameObject bg;
+
+    [SerializeField] private GameObject gridParent;
     public Tile[,] grid;
 
     public void GenerateGrid()
@@ -22,8 +24,8 @@ public class GridManager : MonoBehaviour
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
-            {
-                Tile t = Instantiate(gridTile, new Vector3((float)i * 0.5f, j), Quaternion.identity);
+            {                                                                                        //MODIFIED FROM HERE TO TEST NONDESTRUCTION
+                Tile t = Instantiate(gridTile, new Vector3((float)i * 0.5f, j), Quaternion.identity, gridParent.transform);
 
                 t.name = $"tile {i} {j}";
                 grid[i, j] = t;
@@ -58,18 +60,26 @@ public class GridManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-        //GenerateGrid(); //placeholder
+        GenerateGrid(); //placeholder
+        HideGrid();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        GameManager.onMatchEnd += HideGrid;
     }
 
-    // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void DisplayGrid()
+    {
+        gridParent.SetActive(true);
+    }
+    public void HideGrid()
+    {
+        gridParent.SetActive(false);
     }
 }
