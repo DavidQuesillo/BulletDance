@@ -68,6 +68,50 @@ public class Tile : MonoBehaviour
     {
         return isBullet;
     }
+    public bool GetIfBulletOnAngle(Vector2 where)
+    {
+        bulletDirs bulletCheck;
+        return true; //placeholder
+
+        if (where == Vector2.right)
+        {            
+            bulletCheck = bulletDirs.R;
+        }
+        else if (where == Vector2.right + Vector2.up)
+        {
+            bulletCheck = bulletDirs.UR;
+        }
+        else if (where == Vector2.up)
+        {
+            bulletCheck = bulletDirs.U;
+        }
+        else if (where == Vector2.left + Vector2.up)
+        {
+            bulletCheck = bulletDirs.LU;
+        }
+        else if (where == Vector2.left)
+        {
+            bulletCheck = bulletDirs.L;
+        }
+        /*else if (where == Vector2.left + Vector2.down)
+        {
+            bulletCheck =
+        }
+        else if (dir == Vector2.down)
+        {
+            //sr.transform.rotation = new Quaternion(0, 0, 270f, 0);
+            anim.Play("bulletV");
+            sr.flipX = false;
+            sr.flipY = true;
+        }
+        else if (dir == Vector2.down + Vector2.right)
+        {
+            //sr.transform.rotation = new Quaternion(0, 0, 315f, 0);
+            anim.Play("bulletD");
+            sr.flipX = false;
+            sr.flipY = true;
+        }*/
+    }
 
     public bool GetIfEnemyBullet(PlayerTurns whoChecking)
     {

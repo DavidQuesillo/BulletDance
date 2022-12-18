@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 3
   charSpecial: {fileID: 0}
-  baseActions: 2
+  baseActions: 6
+  baseShots: 4
   charName: Sgt. Thompson
   portrait: {fileID: 0}
   miniPortrait: {fileID: 0}

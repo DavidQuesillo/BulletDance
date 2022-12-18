@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject player2;
     [SerializeField] private int turn = 1;
     [SerializeField] private int actionsInTurn;
+    [SerializeField] private int shotsInturn;
     [SerializeField] private int actionsRange = 6;
 
     private Player winner; //may not stay Player class
@@ -56,7 +57,6 @@ public class GameManager : MonoBehaviour
         }*/        
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         //UiManager.instance.UpdateActions(actionsInTurn);
@@ -64,7 +64,6 @@ public class GameManager : MonoBehaviour
         //InitMatch(); //placeholder
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -97,6 +96,7 @@ public class GameManager : MonoBehaviour
         player2.SetActive(true);
                 
         UiManager.instance.UpdateActions(actionsInTurn, playerPlaying); //display actions of the player
+        UiManager.instance.UpdateShots(shotsInturn, playerPlaying);
         UiManager.instance.UpdateTurn(turn, playerPlaying);
         UiManager.instance.UpdateHP(PlayerTurns.Player1, player1.GetComponent<Player>().GetCharData().hp);
         UiManager.instance.UpdateHP(PlayerTurns.Player2, player2.GetComponent<Player>().GetCharData().hp);
@@ -127,7 +127,17 @@ public class GameManager : MonoBehaviour
             //print("calling action");
         }
         
-        if (actionsInTurn <= 0)
+        if (actionsInTurn <= 0 && shotsInturn <= 0)
+        {
+            TurnEnd();
+        }
+    }
+    public void SpendShot()
+    {
+        shotsInturn -= 1;
+        UiManager.instance.UpdateShots(shotsInturn, playerPlaying);
+
+        if (actionsInTurn <= 0 && shotsInturn <= 0)
         {
             TurnEnd();
         }
@@ -169,11 +179,14 @@ public class GameManager : MonoBehaviour
         UiManager.instance.UpdateTurn(turn, playerPlaying);
 
         //actionsInTurn = 5; //placeholder
-        ActionDice(playerPlaying);
+
+        //ActionDice(playerPlaying);
+        ActionsSet(playerPlaying); //replacing the dice for determined number per char
 
         UiManager.instance.UpdateActions(actionsInTurn, playerPlaying);
 
         if (onTurnSwitch != null) onTurnSwitch();
+        UiManager.instance.UpdateShots(shotsInturn, playerPlaying);
     }
 
     public void MatchEnd(PlayerTurns whoLost)
@@ -203,13 +216,28 @@ public class GameManager : MonoBehaviour
         if (whoseActions == PlayerTurns.Player1)
         {
             actionsInTurn = player1.GetComponent<Player>().GetCharData().baseActions + Random.Range(1, actionsRange + 1);
+            shotsInturn = player1.GetComponent<Player>().GetCharData().baseShots + Random.Range(1, actionsRange + 1);
         }
         else
         {
             actionsInTurn = player2.GetComponent<Player>().GetCharData().baseActions + Random.Range(1, actionsRange + 1);
+            shotsInturn = player2.GetComponent<Player>().GetCharData().baseShots + Random.Range(1, actionsRange + 1);
         }
 
         //actionsInTurn = Random.Range(1, actionsRange + 1);
+    } //outdated, no longer doing luck
+    public void ActionsSet(PlayerTurns whose) //replacement, deterministic
+    {
+        if (whose == PlayerTurns.Player1)
+        {
+            actionsInTurn = player1.GetComponent<Player>().GetCharData().baseActions;
+            shotsInturn = player1.GetComponent<Player>().GetCharData().baseShots;
+        }
+        else
+        {
+            actionsInTurn = player2.GetComponent<Player>().GetCharData().baseActions;
+            shotsInturn = player2.GetComponent<Player>().GetCharData().baseShots;
+        }
     }
 
     private IEnumerator TurnSwitchAnimation(PlayerTurns which)

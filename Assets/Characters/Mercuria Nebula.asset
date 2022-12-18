@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 5
   charSpecial: {fileID: 0}
-  baseActions: 1
+  baseActions: 3
+  baseShots: 7
   charName: Mercuria Nebula
   portrait: {fileID: 0}
   miniPortrait: {fileID: 0}

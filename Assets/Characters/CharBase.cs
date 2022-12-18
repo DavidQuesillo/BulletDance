@@ -9,7 +9,8 @@ public class CharBase : ScriptableObject
     public int hp;
     public SpecialAction charSpecial;
     public int baseActions;
-    
+    public int baseShots;
+
     [Header("Character info")]
     public string charName;
     public Sprite portrait;
