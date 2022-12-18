@@ -184,12 +184,9 @@ public class GameManager : MonoBehaviour
         ActionsSet(playerPlaying); //replacing the dice for determined number per char
 
         UiManager.instance.UpdateActions(actionsInTurn, playerPlaying);
-<<<<<<< Updated upstream
 
         if (onTurnSwitch != null) onTurnSwitch();
-=======
         UiManager.instance.UpdateShots(shotsInturn, playerPlaying);
->>>>>>> Stashed changes
     }
 
     public void MatchEnd(PlayerTurns whoLost)

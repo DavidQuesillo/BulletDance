@@ -13,24 +13,18 @@ public class UiManager : MonoBehaviour
     [Header("Player 1 side")]
     [SerializeField] private TextMeshProUGUI hp1;
     [SerializeField] private TextMeshProUGUI ActionCount1;
-<<<<<<< Updated upstream
     [SerializeField] private Image glow1;
     [SerializeField] private Image[] buttons1 = new Image[3];
-=======
     [SerializeField] private TextMeshProUGUI shotsCount1;
->>>>>>> Stashed changes
 
     [SerializeField] private TextMeshProUGUI charName1;
 
     [Header("Player 2 side")]
     [SerializeField] private TextMeshProUGUI hp2;
     [SerializeField] private TextMeshProUGUI ActionCount2;
-<<<<<<< Updated upstream
     [SerializeField] private Image glow2;
     [SerializeField] private Image[] buttons2 = new Image[3];
-=======
     [SerializeField] private TextMeshProUGUI shotsCount2;
->>>>>>> Stashed changes
 
     [SerializeField] private TextMeshProUGUI charName2;
 

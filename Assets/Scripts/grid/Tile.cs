@@ -71,6 +71,8 @@ public class Tile : MonoBehaviour
     public bool GetIfBulletOnAngle(Vector2 where)
     {
         bulletDirs bulletCheck;
+        return true; //placeholder
+
         if (where == Vector2.right)
         {            
             bulletCheck = bulletDirs.R;
