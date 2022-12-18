@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     [Header("Character Data")]
     [SerializeField] private CharBase charData;
     private int baseActions;
+    private int baseShots;
     private SpecialAction special;
 
 
@@ -37,6 +38,7 @@ public class Player : MonoBehaviour
         tileOn.SetAsPlayerOn(this);
 
         baseActions = charData.baseActions;
+        baseShots = charData.baseShots;
         hp = charData.hp;
         special = charData.charSpecial;
 
@@ -217,10 +219,14 @@ public class Player : MonoBehaviour
                     GameManager.instance.SpendAction();
                     return;
                 }
-                
+                /*if (tilehit.GetComponent<Tile>().GetIfBullet())
+                {
+
+                }*/
                 //if theres no player, instantiate the bullet as normal
                 GameObject b = BulletPool.Instance.RequestPoolObject();
-                GameManager.instance.SpendAction();
+                //GameManager.instance.SpendAction();
+                GameManager.instance.SpendShot();
                 b.transform.position = tilehit.transform.position;
                 b.SetActive(true);
                 b.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), this);
