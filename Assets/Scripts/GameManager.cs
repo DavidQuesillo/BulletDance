@@ -78,12 +78,17 @@ public class GameManager : MonoBehaviour
         if (Random.value < 0.5f)
         {
             playerPlaying = PlayerTurns.Player1;
+
+            actionsInTurn = player1.GetComponent<Player>().GetCharData().baseActions;
+            shotsInturn = player1.GetComponent<Player>().GetCharData().baseShots;
             //player2.GetComponent<PlayerInput>().enabled = false;
             //player1.GetComponent<PlayerInput>().enabled = true;
         }
         else
         {
             playerPlaying = PlayerTurns.Player2;
+            actionsInTurn = player2.GetComponent<Player>().GetCharData().baseActions;
+            shotsInturn = player2.GetComponent<Player>().GetCharData().baseShots;
             //player1.GetComponent<PlayerInput>().enabled = false;
             //player2.GetComponent<PlayerInput>().enabled = true;
         }
@@ -141,6 +146,14 @@ public class GameManager : MonoBehaviour
         {
             TurnEnd();
         }
+    }
+    public int GetActionsInTurn()
+    {
+        return actionsInTurn;
+    }
+    public int GetShotsInTurn()
+    {
+        return shotsInturn;
     }
 
     public void TurnEnd()

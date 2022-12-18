@@ -149,10 +149,10 @@ public class Player : MonoBehaviour
     {
         if (ctx.started && gameObject.activeInHierarchy)
         {
-            if (GameManager.instance.playerPlaying != whichPlayer || moving || dir == Vector2.zero)
-            {
-                return;
-            }
+            if (GameManager.instance.playerPlaying != whichPlayer || moving 
+                || dir == Vector2.zero || GameManager.instance.GetActionsInTurn() <= 0)
+            { return;    }
+
             Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
             //print(tilehit.gameObject.name);
@@ -195,10 +195,10 @@ public class Player : MonoBehaviour
     {
         if (ctx.started && gameObject.activeInHierarchy)
         {
-            if (GameManager.instance.playerPlaying != whichPlayer || moving || dir == Vector2.zero)
-            {
-                return;
-            }
+            if (GameManager.instance.playerPlaying != whichPlayer || moving 
+                || dir == Vector2.zero || GameManager.instance.GetShotsInTurn() <= 0)
+            {  return;      }
+
             Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
             if (tilehit != null)
