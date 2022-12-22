@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int turn = 1;
     [SerializeField] private int actionsInTurn;
     [SerializeField] private int shotsInturn;
+    private bool usedSpecial;
     [SerializeField] private int actionsRange = 6;
 
     private Player winner; //may not stay Player class
@@ -102,6 +103,7 @@ public class GameManager : MonoBehaviour
                 
         UiManager.instance.UpdateActions(actionsInTurn, playerPlaying); //display actions of the player
         UiManager.instance.UpdateShots(shotsInturn, playerPlaying);
+        usedSpecial = false;
         UiManager.instance.UpdateTurn(turn, playerPlaying);
         UiManager.instance.UpdateHP(PlayerTurns.Player1, player1.GetComponent<Player>().GetCharData().hp);
         UiManager.instance.UpdateHP(PlayerTurns.Player2, player2.GetComponent<Player>().GetCharData().hp);
@@ -110,6 +112,8 @@ public class GameManager : MonoBehaviour
         
         if (playerPlaying == PlayerTurns.Player1)   { UiManager.instance.TurnSwitchAnimations(PlayerTurns.Player2); print("player1 starts"); }
         else                                        { UiManager.instance.TurnSwitchAnimations(PlayerTurns.Player1); print("player2 starts"); }
+
+        MusicManager.instance.PlayBattleMusic();
 
         gameStarted = true;
     }
@@ -132,7 +136,11 @@ public class GameManager : MonoBehaviour
             //print("calling action");
         }
         
-        if (actionsInTurn <= 0 && shotsInturn <= 0)
+        if (actionsInTurn <= 0)
+        {
+            UiManager.instance.LockButton(1, playerPlaying);
+        }
+        if (actionsInTurn <= 0 && shotsInturn <= 0 && usedSpecial)
         {
             TurnEnd();
         }
@@ -142,7 +150,19 @@ public class GameManager : MonoBehaviour
         shotsInturn -= 1;
         UiManager.instance.UpdateShots(shotsInturn, playerPlaying);
 
-        if (actionsInTurn <= 0 && shotsInturn <= 0)
+        if (shotsInturn <= 0)
+        {
+            UiManager.instance.LockButton(0, playerPlaying);
+        }
+        if (actionsInTurn <= 0 && shotsInturn <= 0 && usedSpecial)
+        {
+            TurnEnd();
+        }
+    }
+    public void SpendSpecial()
+    {
+        usedSpecial = true;
+        if (shotsInturn <= 0 && actionsInTurn <= 0)
         {
             TurnEnd();
         }
@@ -212,8 +232,12 @@ public class GameManager : MonoBehaviour
         {
             winner = player1.GetComponent<Player>();
         }
+        playerPlaying = PlayerTurns.transitioning;
+        SoundManager.instance.PlayDeathSound();
+        StartCoroutine(MatchEndDelay()); //moving things here for match end feel & feedback
+        //    MOVED TO COROUTINE
         //disable players
-        player1.SetActive(false);
+        /*player1.SetActive(false);
         player2.SetActive(false);
         
         //call event for anything else to close
@@ -221,7 +245,7 @@ public class GameManager : MonoBehaviour
         
         //switch to result screen
         PanelsManager.instance.ShowResult();
-        gameStarted = false;
+        gameStarted = false;*/
     }
 
     public void ActionDice(PlayerTurns whoseActions)
@@ -241,6 +265,7 @@ public class GameManager : MonoBehaviour
     } //outdated, no longer doing luck
     public void ActionsSet(PlayerTurns whose) //replacement, deterministic
     {
+        usedSpecial = false;
         if (whose == PlayerTurns.Player1)
         {
             actionsInTurn = player1.GetComponent<Player>().GetCharData().baseActions;
@@ -253,10 +278,45 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator TurnSwitchAnimation(PlayerTurns which)
+    private IEnumerator TurnSwitchAnimation(PlayerTurns whichOut)
     {
-        UiManager.instance.TurnSwitchAnimations(which);
+        if (whichOut == PlayerTurns.Player1)
+        {
+            UiManager.instance.UnlockButton(0, PlayerTurns.Player2);
+            UiManager.instance.UnlockButton(1, PlayerTurns.Player2);
+            UiManager.instance.UnlockButton(2, PlayerTurns.Player2);
+            UiManager.instance.TurnSwitchAnimations(whichOut);
+            player2.GetComponent<Player>().RefreshSpecial();
+        }
+        else
+        {
+            UiManager.instance.UnlockButton(0, PlayerTurns.Player1);
+            UiManager.instance.UnlockButton(1, PlayerTurns.Player1);
+            UiManager.instance.UnlockButton(2, PlayerTurns.Player1);
+            UiManager.instance.TurnSwitchAnimations(whichOut);
+            player1.GetComponent<Player>().RefreshSpecial();
+        }
+
         yield return new WaitForSeconds(1f);
-        SwitchPlayerTurns(which);
+        SwitchPlayerTurns(whichOut);
+    }
+    private IEnumerator MatchEndDelay()
+    {
+        MusicManager.instance.StopBattleMusic();
+        yield return new WaitForSeconds(4.5f);
+        //disable players
+        player1.SetActive(false);
+        player2.SetActive(false);
+        
+        //call event for anything else to close
+        onMatchEnd();
+                
+        MusicManager.instance.PlayVictoryMusic();
+
+        //switch to result screen
+        PanelsManager.instance.ShowResult();
+        //get the win screen info from the winning player
+        UiManager.instance.SetVictorInfo(winner.GetCharData());
+        gameStarted = false;
     }
 }

@@ -197,6 +197,10 @@ public class Tile : MonoBehaviour
             return false;
         }
     }
+    public List<Bullet> GetBulletsList()
+    {
+        return bullets;
+    }
     public void SetAsBulletOn(PlayerTurns whose, Bullet theBullet, bulletDirs bulletDir)
     {
         isBullet = true;

@@ -28,6 +28,11 @@ public class UiManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI charName2;
 
+    [Header("Win Screen")]
+    [SerializeField] private Image wPortrait;
+    [SerializeField] private TextMeshProUGUI wName;
+    [SerializeField] private QuoteReveal wQuote;
+
     public static UiManager instance;
     private void Awake()
     {
@@ -62,6 +67,35 @@ public class UiManager : MonoBehaviour
         else
         {
             charName2.text = data.charName;
+        }
+    }
+    public void SetVictorInfo(CharBase wInfo)
+    {
+        wPortrait.sprite = wInfo.portrait;
+        wName.text = wInfo.charName + " wins!";
+        wQuote.SetQuote(wInfo.winQuote).PlayQuote(); //FIRST APPLICATION OF THIS FOR ME EVER
+    }
+
+    public void LockButton(int action, PlayerTurns whichPlayer)
+    {
+        if (whichPlayer == PlayerTurns.Player1)
+        {
+            buttons1[action].DOColor(new Color(buttons1[action].color.r, buttons1[action].color.g, buttons1[action].color.b, 0.2f), 0.1f);
+        }
+        else
+        {
+            buttons2[action].DOColor(new Color(buttons2[action].color.r, buttons2[action].color.g, buttons2[action].color.b, 0.2f), 0.1f);
+        }
+    }
+    public void UnlockButton(int action, PlayerTurns whichPlayer)
+    {
+        if (whichPlayer == PlayerTurns.Player1)
+        {
+            buttons1[action].DOColor(new Color(buttons1[action].color.r, buttons1[action].color.g, buttons1[action].color.b, 255f), 0.1f);
+        }
+        else
+        {
+            buttons2[action].DOColor(new Color(buttons2[action].color.r, buttons2[action].color.g, buttons2[action].color.b, 255f), 0.1f);
         }
     }
 

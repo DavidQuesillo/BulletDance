@@ -15,7 +15,8 @@ MonoBehaviour:
   hp: 3
   charSpecial: {fileID: 0}
   baseActions: 6
-  baseShots: 4
+  baseShots: 6
+  animations: {fileID: 0}
   charName: Sgt. Thompson
   portrait: {fileID: 0}
   miniPortrait: {fileID: 0}

@@ -15,12 +15,13 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveDuration = 0.3f;
     [SerializeField] private int hp = 3;
     private bool moving;    
+    private bool specialAvailable = true;
 
     [Header("Character Data")]
     [SerializeField] private CharBase charData;
     private int baseActions;
     private int baseShots;
-    private SpecialAction special;
+    [SerializeField] private SpecialAction special; //modified, must be SpecialAction
 
 
     // Start is called before the first frame update
@@ -28,19 +29,29 @@ public class Player : MonoBehaviour
     {
         if (whichPlayer == PlayerTurns.Player1)
         {
-            tileOn = GridManager.instance.grid[GridManager.instance.width / 2, GridManager.instance.height - 2];
+            //tileOn = GridManager.instance.grid[GridManager.instance.width / 2 - 1, GridManager.instance.height - 2];
+            //tileOn = GridManager.instance.grid[GridManager.instance.width / 2 - 1, 1];
+
+            tileOn = GridManager.instance.grid[1, GridManager.instance.height / 2];
         }
         else
         {
-            tileOn = GridManager.instance.grid[GridManager.instance.width / 2 - 1, 1];
+            //tileOn = GridManager.instance.grid[GridManager.instance.width / 2, 1];
+            //tileOn = GridManager.instance.grid[GridManager.instance.width / 2, GridManager.instance.height - 2];
+
+            tileOn = GridManager.instance.grid[GridManager.instance.width - 2, GridManager.instance.height / 2];
         }
         rb.position = tileOn.transform.position;
         tileOn.SetAsPlayerOn(this);
+        sr.enabled = true;
 
         baseActions = charData.baseActions;
         baseShots = charData.baseShots;
         hp = charData.hp;
-        special = charData.charSpecial;
+        special = charData.charSpecial; //intended way, on placeholder
+        special.SetupSpecial(this, gameObject);
+        //special = charData.specialScript; //testing
+        anim.runtimeAnimatorController  = charData.animations;
 
         CheckFacing();
         /*print(Physics2D.Raycast(transform.position, Vector2.up, 1f, LayerMask.GetMask("Grid")).collider.gameObject.name);
@@ -74,7 +85,10 @@ public class Player : MonoBehaviour
     {
         return whichPlayer;
     }
-
+    public SpriteRenderer GetSpriteRend()
+    {
+        return sr;
+    }
     public void TakeDamage()
     {
         print("taking damage");
@@ -94,6 +108,7 @@ public class Player : MonoBehaviour
     public void PlayerDeath()
     {
         //placeholder
+        sr.enabled = false;
         GameManager.instance.MatchEnd(whichPlayer);
     }
 
@@ -158,6 +173,7 @@ public class Player : MonoBehaviour
             //print(tilehit.gameObject.name);
             if (tilehit != null)
             {
+                SoundManager.instance.PlayStepSound();
                 //rb.MovePosition(tilehit.transform.position); //replace with tween
                 if (tilehit.GetComponent<Tile>().GetIfBullet())
                 {
@@ -180,6 +196,7 @@ public class Player : MonoBehaviour
                 tileOn.SetAsPlayerOn(this);
 
                 CheckFacing();
+                SoundManager.instance.RefreshBulletAdvSound(); //I really dont know where else to put this
                 //GameManager.instance.SpendAction();
                 //print("moved to " + tilehit.name);
             }
@@ -203,6 +220,7 @@ public class Player : MonoBehaviour
 
             if (tilehit != null)
             {
+                
                 if (tilehit.GetComponent<Tile>().GetIfSameDirBullet(dir))
                 {
                     print("had same dir");
@@ -216,7 +234,9 @@ public class Player : MonoBehaviour
                         return;
                     }
                     tilehit.GetComponent<Tile>().GetPlayerOnThis().TakeDamage();
-                    GameManager.instance.SpendAction();
+                    SoundManager.instance.PlayShootSound();
+                    GameManager.instance.SpendShot();
+                    //GameManager.instance.SpendAction();
                     return;
                 }
                 /*if (tilehit.GetComponent<Tile>().GetIfBullet())
@@ -230,9 +250,9 @@ public class Player : MonoBehaviour
                 b.transform.position = tilehit.transform.position;
                 b.SetActive(true);
                 b.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), this);
-                
-                
-                
+                SoundManager.instance.PlayShootSound();
+
+
                 print(dir.ToString()); //debug what dir the bullet is getting
             }
         }
@@ -263,8 +283,22 @@ public class Player : MonoBehaviour
         yield break;
     }*/
 
-    public void UseSpecial()
+    public void UseSpecial(InputAction.CallbackContext ctx)
     {
-        special.ActivateSpecial();
+        if (ctx.started)
+        {
+            if (GameManager.instance.playerPlaying != whichPlayer || moving
+                || dir == Vector2.zero || !specialAvailable)
+            { return; }
+            special.ActivateSpecial(dir, whichPlayer, this); //modified for testing
+                                                             //special.GetType().GetMethod("ActivateSpecial").Invoke();
+                                                             //Invoke(special.GetType().GetMethod("ActivateSpecial").ToString(), 0f);
+            specialAvailable = false;
+            //UiManager.instance.LockButton(2, whichPlayer);
+        }        
+    }
+    public void RefreshSpecial()
+    {
+        specialAvailable = true;
     }
 }

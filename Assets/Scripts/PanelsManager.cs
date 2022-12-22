@@ -52,7 +52,7 @@ public class PanelsManager : MonoBehaviour
         game.SetActive(false);
         result.SetActive(false);
         title.SetActive(true);
-
+        MusicManager.instance.StopPlaying();
         var eventSystem = EventSystem.current;
         eventSystem.SetSelectedGameObject(playButton);
     }
