@@ -25,11 +25,6 @@ public class SpecialMercuria : SpecialAction
         if (tilehit != null)
         {
             #region The central bullet
-            /*if (tilehit.GetComponent<Tile>().GetIfSameDirBullet(dir))
-            {
-                //print("had same dir");
-                return;
-            }*/
             if (tilehit.GetComponent<Tile>().GetIfPlayerOn()) //check if the enemy is on the tile you're shooting
             {
                 if (tilehit.GetComponent<Tile>().GetPlayerOnThis() == this)
@@ -37,9 +32,6 @@ public class SpecialMercuria : SpecialAction
                     Debug.Log("its the same playu7er");
                     return false;
                 }
-                //tilehit.GetComponent<Tile>().GetPlayerOnThis().TakeDamage();
-                //GameManager.instance.SpendAction();
-
                 tilehit.GetComponent<Tile>().GetPlayerOnThis().Instakill();
                 //return;
             }
@@ -47,15 +39,34 @@ public class SpecialMercuria : SpecialAction
                 .GetIfEnemyBullet(sourcePlayer.GetWhichPlayer()))
             {
                 List<Bullet> bOnT = tilehit.GetComponent<Tile>().GetBulletsList();
-                for (int i = 0; i < bOnT.Count; i++)
+                //Debug.Log("count on tile: " + tilehit.GetComponent<Tile>().GetBulletsList().Count.ToString());
+                //Debug.Log("Count on sword: " + bOnT.Count.ToString());
+                List<Bullet> bulletsToDelete = new List<Bullet>();
+                int bCount = bOnT.Count;
+                for (int i = 0; i < bCount; i++)
                 {
-                    if (bOnT[i].shotByWho != sourcePlayer.GetWhichPlayer())
+                    Debug.Log("Loop ran " + i);
+                    if (bOnT[i].GetWhose() != sourcePlayer.GetWhichPlayer())
                     {
-                        Bullet b = bOnT[i];
+                        /*Bullet b = bOnT[i];
                         //bOnT.Remove(b);
                         tilehit.GetComponent<Tile>().SetAsBulletOff(b);
-                        b.gameObject.SetActive(false);
+                        b.gameObject.SetActive(false);*/
+                        /*Debug.Log("Called " + i);
+                        Debug.Log("bont count: " + bOnT.Count);
+                        Debug.Log("start count: "+ bCount);*/
+                        bulletsToDelete.Add(bOnT[i]);
                     }
+                    /*else
+                    {
+                        Debug.Log("its bc theyre misassigned");
+                    }*/
+                }
+
+                for (int i = 0; i < bCount; i++)
+                {
+                    tilehit.GetComponent<Tile>().SetAsBulletOff(bulletsToDelete[i]);
+                    bulletsToDelete[i].gameObject.SetActive(false);
                 }
             }
 
