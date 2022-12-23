@@ -123,8 +123,9 @@ public class Player : MonoBehaviour
         {
             p = GameManager.instance.player1.transform.position;
         }
+        transform.right = p - transform.position;
 
-        if (Vector3.Distance(new Vector3(p.x, 0f, 0f), new Vector3(transform.position.x, 0f, 0f)) 
+        /*if (Vector3.Distance(new Vector3(p.x, 0f, 0f), new Vector3(transform.position.x, 0f, 0f)) 
                 >= 
                     Vector3.Distance(new Vector3(0f, p.y, 0f), new Vector3(0f, transform.position.y, 0)))
         {
@@ -151,7 +152,7 @@ public class Player : MonoBehaviour
                 anim.Play("FaceDown");
                 sr.flipX = false;
             }
-        }
+        }*/
     }
 
     public void TrackDir(InputAction.CallbackContext ctx)
@@ -173,6 +174,10 @@ public class Player : MonoBehaviour
             //print(tilehit.gameObject.name);
             if (tilehit != null)
             {
+                if (tilehit.GetComponent<Tile>().GetIfPlayerOn())
+                {
+                    return;
+                }
                 SoundManager.instance.PlayStepSound();
                 //rb.MovePosition(tilehit.transform.position); //replace with tween
                 if (tilehit.GetComponent<Tile>().GetIfBullet())

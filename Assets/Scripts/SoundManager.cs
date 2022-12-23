@@ -10,6 +10,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip moveClip;
     [SerializeField] private AudioClip bulletAdvClip;
     private bool bulletAdvPlayed;
+    [SerializeField] private AudioClip actFailClip;
     [SerializeField] private AudioClip killSound;
 
     private void Awake()
@@ -38,11 +39,19 @@ public class SoundManager : MonoBehaviour
     }
     public void PlayBulletsAdvSound()
     {
-        if (!bulletAdvPlayed) {aus.PlayOneShot(bulletAdvClip); }        
+        if (!bulletAdvPlayed) { theBullPlayFunc();}        
+    }
+    private void theBullPlayFunc()
+    {
+        aus.PlayOneShot(bulletAdvClip);
     }
     public void RefreshBulletAdvSound()
     {
         bulletAdvPlayed = false;
+    }
+    public void PlayFailSound()
+    {
+        aus.PlayOneShot(actFailClip);
     }
     public void PlayDeathSound()
     {

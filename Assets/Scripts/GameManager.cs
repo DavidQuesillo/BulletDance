@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public PlayerTurns playerPlaying;
     [SerializeField] public GameObject player1;
     [SerializeField] public GameObject player2;
+    [SerializeField] private GameObject endExplosion;
     [SerializeField] private int turn = 1;
     [SerializeField] private int actionsInTurn;
     [SerializeField] private int shotsInturn;
@@ -227,10 +228,14 @@ public class GameManager : MonoBehaviour
         if (whoLost == PlayerTurns.Player1)
         {
             winner = player2.GetComponent<Player>();
+            endExplosion.transform.position = player1.transform.position;
+            endExplosion.GetComponent<Animator>().Play("death_explosion");
         }
         else
         {
             winner = player1.GetComponent<Player>();
+            endExplosion.transform.position = player2.transform.position;
+            endExplosion.GetComponent<Animator>().Play("death_explosion");
         }
         playerPlaying = PlayerTurns.transitioning;
         SoundManager.instance.PlayDeathSound();
