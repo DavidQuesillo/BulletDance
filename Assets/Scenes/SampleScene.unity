@@ -7189,7 +7189,7 @@ MonoBehaviour:
   tileOn: {fileID: 0}
   moveDuration: 0.5
   hp: 3
-  charData: {fileID: 11400000, guid: 3f0caa621892a354f93d5a052e71ed9a, type: 2}
+  charData: {fileID: 11400000, guid: 2374ab2bd93b9784f87fc64f8acd6f15, type: 2}
   special: {fileID: 0}
 --- !u!4 &958914155
 Transform:

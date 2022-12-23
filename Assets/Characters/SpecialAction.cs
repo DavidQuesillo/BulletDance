@@ -34,9 +34,9 @@ public class SpecialAction : ScriptableObject
     {
 
     }
-    public virtual void ActivateSpecial(Vector2 dir, PlayerTurns whichPlayer, Player sourcePlayer)
+    public virtual bool ActivateSpecial(Vector2 dir, PlayerTurns whichPlayer, Player sourcePlayer)
     {
-
+        return false;
     }
 
     public virtual void EndSpecial()

@@ -5,7 +5,36 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "GameData/SpecialAdam", fileName = "SpecialAdam")]
 public class SpecialAdamH : SpecialAction
 {
-    public override void ActivateSpecial(Vector2 dir, PlayerTurns whichPlayer, Player sourcePlayer)
+    private void SideBullet(Vector2 dirr, PlayerTurns whichPlayerr, Player sourcePlayerr, Tile Rtile)
+    {
+        //GameObject r = BulletPool.Instance.RequestPoolObject();
+        //same necessary checks as a normal shot
+        if (Rtile.GetComponent<Tile>().GetIfSameDirBullet(dirr))
+        {
+            //print("had same dir");
+            return;
+        }
+        if (Rtile.GetComponent<Tile>().GetIfPlayerOn()) // check if the enemy is on the tile you're shooting
+        {
+            if (Rtile.GetComponent<Tile>().GetPlayerOnThis() == this)
+            {
+                Debug.Log("its the same playu7er");
+                return;
+            }
+            Rtile.GetComponent<Tile>().GetPlayerOnThis().TakeDamage();
+            //GameManager.instance.SpendAction();
+            return;
+        }
+
+        GameObject r = BulletPool.Instance.RequestPoolObject();
+        //GameManager.instance.SpendAction();
+        //GameManager.instance.SpendShot();
+        r.transform.position = Rtile.transform.position;
+        r.SetActive(true);
+        r.GetComponent<Bullet>().BulletInit(whichPlayerr, dirr, Rtile, sourcePlayerr);
+    }
+
+    public override bool ActivateSpecial(Vector2 dir, PlayerTurns whichPlayer, Player sourcePlayer)
     {
         Collider2D tilehit = Physics2D.Raycast(sourcePlayer.transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
@@ -21,13 +50,14 @@ public class SpecialAdamH : SpecialAction
                 //print("had same dir");
              //   return;
                 b.SetActive(false);
+                return false;
             }
             else if (tilehit.GetComponent<Tile>().GetIfPlayerOn()) //check if the enemy is on the tile you're shooting
             {
                 if (tilehit.GetComponent<Tile>().GetPlayerOnThis() == this)
                 {
                     Debug.Log("its the same playu7er");
-                    return;
+                    return false;
                 }
                 tilehit.GetComponent<Tile>().GetPlayerOnThis().TakeDamage();
                 b.SetActive(false);
@@ -56,9 +86,13 @@ public class SpecialAdamH : SpecialAction
             ////the cardinal direction are gotten from the player's cardinals. Diagonals are gotten from the bullet's
             if (b.GetComponent<Bullet>().GetDir() == bulletDirs.L)
             {
+                Tile leftTile = Physics2D.Raycast(b.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, leftTile);
+                Tile rightTile = Physics2D.Raycast(b.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, rightTile);
                 #region The Left Bullet
                 //THE LEFT SHOT
-                Collider2D Ltile = Physics2D.Raycast(b.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Ltile = Physics2D.Raycast(b.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
                 if (Ltile == tilehit)
                 {  Debug.Log("hitting the same"); }
                 //same necessary checks as a normal shot
@@ -84,17 +118,17 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 l.transform.position = Ltile.transform.position;
                 l.SetActive(true);
-                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);                
+                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/                
                 #endregion
                 #region The Right Bullet
                 //THE RIGHT SHOT
-                Collider2D Rtile = Physics2D.Raycast(b.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Rtile = Physics2D.Raycast(b.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Rtile.GetComponent<Tile>().GetIfSameDirBullet(dir))
                 {
                     //print("had same dir");
-                    return;
+                    return false;
                 }
                 if (Rtile.GetComponent<Tile>().GetIfPlayerOn()) // check if the enemy is on the tile you're shooting
                 {
@@ -113,14 +147,18 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 r.transform.position = Rtile.transform.position;
                 r.SetActive(true);
-                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
             }
             if (b.GetComponent<Bullet>().GetDir() == bulletDirs.LD)
             {
+                Tile leftTile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, leftTile);
+                Tile rightTile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, rightTile);
                 #region The Left Bullet
                 //THE LEFT SHOT
-                Collider2D Ltile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Ltile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
                 GameObject l = BulletPool.Instance.RequestPoolObject();
 
                 //same necessary checks as a normal shot
@@ -150,12 +188,12 @@ public class SpecialAdamH : SpecialAction
                     l.transform.position = Ltile.transform.position;
                     l.SetActive(true);
                     l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
-                }
+                }*/
 
                 #endregion
                 #region The Right Bullet
                 //THE RIGHT SHOT
-                Collider2D Rtile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Rtile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
                 GameObject r = BulletPool.Instance.RequestPoolObject();
 
                 //same necessary checks as a normal shot
@@ -186,14 +224,19 @@ public class SpecialAdamH : SpecialAction
                     r.SetActive(true);
                     r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
                 }
-                
+                */
                 #endregion
             }
             if (b.GetComponent<Bullet>().GetDir() == bulletDirs.D) //THIS IS WHERE WE LEFT OFF!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             {
+                Tile leftTile = Physics2D.Raycast(b.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, leftTile);
+                Tile rightTile = Physics2D.Raycast(b.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, rightTile);
+
                 #region The Left Bullet
                 //THE LEFT SHOT
-                Collider2D Ltile = Physics2D.Raycast(b.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Ltile = Physics2D.Raycast(b.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Ltile.GetComponent<Tile>().GetIfSameDirBullet(dir))
@@ -218,11 +261,11 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 l.transform.position = Ltile.transform.position;
                 l.SetActive(true);
-                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
                 #region The Right Bullet
                 //THE RIGHT SHOT
-                Collider2D Rtile = Physics2D.Raycast(b.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Rtile = Physics2D.Raycast(b.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Rtile.GetComponent<Tile>().GetIfSameDirBullet(dir))
@@ -247,14 +290,19 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 r.transform.position = Rtile.transform.position;
                 r.SetActive(true);
-                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
             }
             if (b.GetComponent<Bullet>().GetDir() == bulletDirs.DR)
             {
+                Tile leftTile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, leftTile);
+                Tile rightTile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, rightTile);
+
                 #region The Left Bullet
                 //THE LEFT SHOT
-                Collider2D Ltile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Ltile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Ltile.GetComponent<Tile>().GetIfSameDirBullet(dir))
@@ -279,11 +327,11 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 l.transform.position = Ltile.transform.position;
                 l.SetActive(true);
-                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
                 #region The Right Bullet
                 //THE RIGHT SHOT
-                Collider2D Rtile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Rtile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Rtile.GetComponent<Tile>().GetIfSameDirBullet(dir))
@@ -308,14 +356,19 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 r.transform.position = Rtile.transform.position;
                 r.SetActive(true);
-                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
             }
             if (b.GetComponent<Bullet>().GetDir() == bulletDirs.R)
             {
+                Tile leftTile = Physics2D.Raycast(b.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, leftTile);
+                Tile rightTile = Physics2D.Raycast(b.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, rightTile);
+
                 #region The Left Bullet
                 //THE LEFT SHOT
-                Collider2D Ltile = Physics2D.Raycast(b.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Ltile = Physics2D.Raycast(b.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Ltile.GetComponent<Tile>().GetIfSameDirBullet(dir))
@@ -340,11 +393,11 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 l.transform.position = Ltile.transform.position;
                 l.SetActive(true);
-                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
                 #region The Right Bullet
                 //THE RIGHT SHOT
-                Collider2D Rtile = Physics2D.Raycast(b.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Rtile = Physics2D.Raycast(b.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Rtile.GetComponent<Tile>().GetIfSameDirBullet(dir))
@@ -369,14 +422,19 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 r.transform.position = Rtile.transform.position;
                 r.SetActive(true);
-                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
             }
             if (b.GetComponent<Bullet>().GetDir() == bulletDirs.UR)
             {
+                Tile leftTile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, leftTile);
+                Tile rightTile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, rightTile);
+
                 #region The Left Bullet
                 //THE LEFT SHOT
-                Collider2D Ltile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Ltile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Ltile.GetComponent<Tile>().GetIfSameDirBullet(dir))
@@ -401,11 +459,11 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 l.transform.position = Ltile.transform.position;
                 l.SetActive(true);
-                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
                 #region The Right Bullet
                 //THE RIGHT SHOT
-                Collider2D Rtile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Rtile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Rtile.GetComponent<Tile>().GetIfSameDirBullet(dir))
@@ -430,14 +488,19 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 r.transform.position = Rtile.transform.position;
                 r.SetActive(true);
-                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
             }
             if (b.GetComponent<Bullet>().GetDir() == bulletDirs.U)
             {
+                Tile leftTile = Physics2D.Raycast(b.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, leftTile);
+                Tile rightTile = Physics2D.Raycast(b.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, rightTile);
+
                 #region The Left Bullet
                 //THE LEFT SHOT
-                Collider2D Ltile = Physics2D.Raycast(b.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Ltile = Physics2D.Raycast(b.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Ltile.GetComponent<Tile>().GetIfSameDirBullet(dir))
@@ -462,11 +525,11 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 l.transform.position = Ltile.transform.position;
                 l.SetActive(true);
-                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
                 #region The Right Bullet
                 //THE RIGHT SHOT
-                Collider2D Rtile = Physics2D.Raycast(b.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Rtile = Physics2D.Raycast(b.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Rtile.GetComponent<Tile>().GetIfSameDirBullet(dir))
@@ -491,14 +554,19 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 r.transform.position = Rtile.transform.position;
                 r.SetActive(true);
-                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
             }
             if (b.GetComponent<Bullet>().GetDir() == bulletDirs.LU)
             {
+                Tile leftTile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, leftTile);
+                Tile rightTile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider.GetComponent<Tile>();
+                SideBullet(dir, whichPlayer, sourcePlayer, rightTile);
+
                 #region The Left Bullet
                 //THE LEFT SHOT
-                Collider2D Ltile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Ltile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Ltile.GetComponent<Tile>().GetIfSameDirBullet(dir))
@@ -523,11 +591,11 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 l.transform.position = Ltile.transform.position;
                 l.SetActive(true);
-                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                l.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
                 #region The Right Bullet
                 //THE RIGHT SHOT
-                Collider2D Rtile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+                /*Collider2D Rtile = Physics2D.Raycast(sourcePlayer.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
 
                 //same necessary checks as a normal shot
                 if (Rtile.GetComponent<Tile>().GetIfSameDirBullet(dir))
@@ -552,17 +620,19 @@ public class SpecialAdamH : SpecialAction
                 //GameManager.instance.SpendShot();
                 r.transform.position = Rtile.transform.position;
                 r.SetActive(true);
-                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                r.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);*/
                 #endregion
-            }
+            }            
             EndSpecial();
             UiManager.instance.LockButton(2, whichPlayer);
+            return true;
         }
+        return false;
     }
 
     public override void EndSpecial()
     {
-        base.EndSpecial();
-        GameManager.instance.SpendSpecial();
+        //base.EndSpecial();
+        //GameManager.instance.SpendSpecial();
     }
 }

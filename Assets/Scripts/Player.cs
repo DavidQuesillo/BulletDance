@@ -295,12 +295,21 @@ public class Player : MonoBehaviour
             if (GameManager.instance.playerPlaying != whichPlayer || moving
                 || dir == Vector2.zero || !specialAvailable)
             { return; }
-            special.ActivateSpecial(dir, whichPlayer, this); //modified for testing
+            //special.ActivateSpecial(dir, whichPlayer, this); //modified for testing
                                                              //special.GetType().GetMethod("ActivateSpecial").Invoke();
                                                              //Invoke(special.GetType().GetMethod("ActivateSpecial").ToString(), 0f);
-            specialAvailable = false;
-            SoundManager.instance.PlaySpecialSound(charData.specialClip);
-            //UiManager.instance.LockButton(2, whichPlayer);
+            
+            if (special.ActivateSpecial(dir, whichPlayer, this))
+            {
+                specialAvailable = false;
+                GameManager.instance.SpendSpecial();
+                SoundManager.instance.PlaySpecialSound(charData.specialClip);
+                //UiManager.instance.LockButton(2, whichPlayer);
+            }
+            else
+            {
+                SoundManager.instance.PlayFailSound();
+            }
         }        
     }
     public void RefreshSpecial()

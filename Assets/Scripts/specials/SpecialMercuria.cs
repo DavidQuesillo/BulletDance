@@ -16,7 +16,7 @@ public class SpecialMercuria : SpecialAction
         //s.SetActive(false);
         Sword = s;
     }
-    public override void ActivateSpecial(Vector2 dir, PlayerTurns whichPlayer, Player sourcePlayer)
+    public override bool ActivateSpecial(Vector2 dir, PlayerTurns whichPlayer, Player sourcePlayer)
     {
         //base.ActivateSpecial(dir, whichPlayer, sourcePlayer);
 
@@ -35,7 +35,7 @@ public class SpecialMercuria : SpecialAction
                 if (tilehit.GetComponent<Tile>().GetPlayerOnThis() == this)
                 {
                     Debug.Log("its the same playu7er");
-                    return;
+                    return false;
                 }
                 //tilehit.GetComponent<Tile>().GetPlayerOnThis().TakeDamage();
                 //GameManager.instance.SpendAction();
@@ -121,7 +121,9 @@ public class SpecialMercuria : SpecialAction
             Sword.transform.right = sourcePlayer.transform.position - Sword.transform.position;
             EndSpecial();
             UiManager.instance.LockButton(2, whichPlayer);
+            return true;
         }
+        return false;
     }
 
     public override void EndSpecial()
