@@ -52,7 +52,8 @@ public class SpecialMercuria : SpecialAction
                     if (bOnT[i].shotByWho != sourcePlayer.GetWhichPlayer())
                     {
                         Bullet b = bOnT[i];
-                        bOnT.Remove(b);
+                        //bOnT.Remove(b);
+                        tilehit.GetComponent<Tile>().SetAsBulletOff(b);
                         b.gameObject.SetActive(false);
                     }
                 }

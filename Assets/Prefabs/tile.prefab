@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 7abe4df1d5204c541bcf415f8c15399d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6062349, g: 0.5856889, b: 0.6792453, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -188,6 +188,7 @@ MonoBehaviour:
   off: 0
   isPlayer: 0
   bullets: []
+  dirs: 
 --- !u!50 &-1896537165940572512
 Rigidbody2D:
   serializedVersion: 4

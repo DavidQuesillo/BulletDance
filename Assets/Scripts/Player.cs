@@ -299,6 +299,7 @@ public class Player : MonoBehaviour
                                                              //special.GetType().GetMethod("ActivateSpecial").Invoke();
                                                              //Invoke(special.GetType().GetMethod("ActivateSpecial").ToString(), 0f);
             specialAvailable = false;
+            SoundManager.instance.PlaySpecialSound(charData.specialClip);
             //UiManager.instance.LockButton(2, whichPlayer);
         }        
     }

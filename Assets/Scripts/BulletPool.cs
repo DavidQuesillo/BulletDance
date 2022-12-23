@@ -28,6 +28,7 @@ public class BulletPool : MonoBehaviour
     void Start()
     {
         AddObjToPool(poolsize);
+        GameManager.onPlayedMoved += PlayBulletAdvSound;
     }
 
     public void AddObjToPool(int amount)
@@ -53,5 +54,18 @@ public class BulletPool : MonoBehaviour
         AddObjToPool(1);
         objList[objList.Count - 1].SetActive(true);
         return objList[objList.Count - 1]; //creates a new object and adds it to the pool to return it to the function
+    }
+
+    public void PlayBulletAdvSound()
+    {
+        for (int i = 0; i < objList.Count; i++)
+        {
+            if (objList[i].activeSelf == true)
+            {
+                SoundManager.instance.PlayBulletsAdvSound();
+                return;
+            }
+        }
+        
     }
 }

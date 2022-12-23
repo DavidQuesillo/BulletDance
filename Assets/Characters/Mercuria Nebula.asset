@@ -17,7 +17,7 @@ MonoBehaviour:
   baseActions: 2
   baseShots: 5
   animations: {fileID: 9100000, guid: 9dc29ca7628486f47b137db5c7470d55, type: 2}
-  specialClip: {fileID: 0}
+  specialClip: {fileID: 8300000, guid: 3aece4bff3b2028409c1eaf08374f730, type: 3}
   charName: Mercuria Nebula
   portrait: {fileID: 0}
   miniPortrait: {fileID: 0}

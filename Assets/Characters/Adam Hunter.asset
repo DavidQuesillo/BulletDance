@@ -17,7 +17,7 @@ MonoBehaviour:
   baseActions: 4
   baseShots: 4
   animations: {fileID: 9100000, guid: a4fd25e3d7e6c30479361de8b13951e1, type: 2}
-  specialClip: {fileID: 0}
+  specialClip: {fileID: 8300000, guid: c50fd3f8c40129648a86d82b98b034e9, type: 3}
   charName: Adam Hunter
   portrait: {fileID: 0}
   miniPortrait: {fileID: 0}

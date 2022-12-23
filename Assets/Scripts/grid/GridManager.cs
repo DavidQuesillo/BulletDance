@@ -45,7 +45,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        cam.transform.position = new Vector3((float)width / 4, (float)height / 3 * 2, -10);
+        cam.transform.position = new Vector3((float)width / 4, (float)height / 3 * 2 - 1, -10);
         bg.transform.position = new Vector3((float)width / 4, (float)height / 3 * 2, 0);
     }
 
