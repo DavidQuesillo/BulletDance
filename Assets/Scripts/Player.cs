@@ -165,7 +165,7 @@ public class Player : MonoBehaviour
     {
         if (ctx.started && gameObject.activeInHierarchy)
         {
-            if (GameManager.instance.playerPlaying != whichPlayer || moving 
+            if (GameManager.instance.playerPlaying != whichPlayer || moving || GameManager.instance.paused
                 || dir == Vector2.zero || GameManager.instance.GetActionsInTurn() <= 0)
             { return;    }
 
@@ -217,7 +217,7 @@ public class Player : MonoBehaviour
     {
         if (ctx.started && gameObject.activeInHierarchy)
         {
-            if (GameManager.instance.playerPlaying != whichPlayer || moving 
+            if (GameManager.instance.playerPlaying != whichPlayer || moving || GameManager.instance.paused
                 || dir == Vector2.zero || GameManager.instance.GetShotsInTurn() <= 0)
             {  return;      }
 
@@ -292,7 +292,7 @@ public class Player : MonoBehaviour
     {
         if (ctx.started)
         {
-            if (GameManager.instance.playerPlaying != whichPlayer || moving
+            if (GameManager.instance.playerPlaying != whichPlayer || moving ||GameManager.instance.paused
                 || dir == Vector2.zero || !specialAvailable)
             { return; }
             //special.ActivateSpecial(dir, whichPlayer, this); //modified for testing

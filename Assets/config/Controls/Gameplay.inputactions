@@ -810,6 +810,17 @@
                 },
                 {
                     "name": "",
+                    "id": "bc658eb4-9738-445e-bf2a-4ad827b76f8d",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6819e6f2-536a-41eb-9323-73e303b688cd",
                     "path": "<Mouse>/position",
                     "interactions": "",

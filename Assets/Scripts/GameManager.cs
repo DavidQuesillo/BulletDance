@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public bool gameStarted = false;
     [SerializeField] public PlayerTurns playerPlaying;
+    public bool paused;
     [SerializeField] public GameObject player1;
     [SerializeField] public GameObject player2;
     [SerializeField] private GameObject endExplosion;
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int actionsInTurn;
     [SerializeField] private int shotsInturn;
     private bool usedSpecial;
+    //[SerializeField] private bool paused;
     [SerializeField] private int actionsRange = 6;
 
     private Player winner; //may not stay Player class
@@ -251,6 +253,17 @@ public class GameManager : MonoBehaviour
         //switch to result screen
         PanelsManager.instance.ShowResult();
         gameStarted = false;*/
+    }
+    public void ClearForTitle()
+    {
+        MusicManager.instance.StopBattleMusic();
+        //disable players
+        player1.SetActive(false);
+        player2.SetActive(false);
+
+        //call event for anything else to close
+        onMatchEnd();
+        gameStarted = false;
     }
 
     public void ActionDice(PlayerTurns whoseActions)
