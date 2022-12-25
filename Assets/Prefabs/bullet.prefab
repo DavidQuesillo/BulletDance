@@ -99,6 +99,7 @@ MonoBehaviour:
   anim: {fileID: 5565533656834428563}
   shotByWho: 0
   dir: {x: 0, y: 0}
+  LetterDir: 0
   tileOn: {fileID: 0}
   bulletMoveTimer: 1
 --- !u!1 &8644501366698889562
@@ -174,7 +175,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 3
   m_Sprite: {fileID: -3051094813877794038, guid: a61f50aed8e6fcc4e94ad961c48ee357, type: 3}
   m_Color: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
   m_FlipX: 0

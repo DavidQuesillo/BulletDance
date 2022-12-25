@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int hp = 3;
     private bool moving;    
     private bool specialAvailable = true;
+    [SerializeField] private PlayerArrows arrows;
 
     [Header("Character Data")]
     public CharBase charData; //FIX THIS ENCAPSULATION IF AT ALL POSSIBLE
@@ -44,17 +45,22 @@ public class Player : MonoBehaviour
         rb.position = tileOn.transform.position;
         tileOn.SetAsPlayerOn(this);
         sr.enabled = true;
+        //arrows.CheckAvailableMoves(); //moved to coroutine
+        arrows.ArrowVisibility(false);
 
         baseActions = charData.baseActions;
         baseShots = charData.baseShots;
         specialAvailable = true;
         hp = charData.hp;
-        special = charData.charSpecial; //intended way, on placeholder
+        special = charData.charSpecial; //intended way, on placeholder //itworked
         special.SetupSpecial(this, gameObject);
-        //special = charData.specialScript; //testing
+        //special = charData.specialScript; //testing //it failed
         anim.runtimeAnimatorController  = charData.animations;
+        
+        //testing if delay fixes things
+        StartCoroutine(SetupRequiredWait());
+        //CheckFacing(); //moved to coroutine
 
-        CheckFacing();
         /*print(Physics2D.Raycast(transform.position, Vector2.up, 1f, LayerMask.GetMask("Grid")).collider.gameObject.name);
         tileOn = Physics2D.Raycast(transform.position, Vector2.up, 1f, LayerMask.GetMask("Grid")).collider.gameObject.GetComponent<Tile>();
 
@@ -67,11 +73,19 @@ public class Player : MonoBehaviour
             tileOn.SetAsPlayerOn(2);
         }*/
     }
+    private IEnumerator SetupRequiredWait()
+    {
+        //yield return new WaitForSecondsRealtime(0.01f);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        arrows.CheckAvailableMoves();
+        CheckFacing();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        
+        arrows.transform.position = transform.position;
     }
 
     /*private void OnDrawGizmos()
@@ -93,6 +107,10 @@ public class Player : MonoBehaviour
     public SpriteRenderer GetSpriteRend()
     {
         return sr;
+    }
+    public PlayerArrows GetArrows()
+    {
+        return arrows;
     }
     public void TakeDamage()
     {
@@ -271,7 +289,8 @@ public class Player : MonoBehaviour
     private void FinalizeMove()
     {
         moving = false;
-        GameManager.instance.SpendAction();
+        arrows.CheckAvailableMoves();
+        GameManager.instance.SpendAction();        
         //this func replaces what happens in playermove coroutine
     }
 

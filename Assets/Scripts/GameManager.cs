@@ -118,12 +118,17 @@ public class GameManager : MonoBehaviour
         {
             actionsInTurn = player1.GetComponent<Player>().GetCharData().baseActions;
             shotsInturn = player1.GetComponent<Player>().GetCharData().baseShots;
+
+            player1.GetComponent<Player>().GetArrows().ArrowVisibility(true);
+            //player1.GetComponent<Player>().GetArrows().CheckAvailableMoves();
         }
         else
         {
             actionsInTurn = player2.GetComponent<Player>().GetCharData().baseActions;
             shotsInturn = player2.GetComponent<Player>().GetCharData().baseShots;
 
+            player2.GetComponent<Player>().GetArrows().ArrowVisibility(true);
+            //player2.GetComponent<Player>().GetArrows().CheckAvailableMoves();
         }
                 
         UiManager.instance.UpdateActions(actionsInTurn, playerPlaying); //display actions of the player
@@ -261,6 +266,8 @@ public class GameManager : MonoBehaviour
             endExplosion.transform.position = player2.transform.position;
             endExplosion.GetComponent<Animator>().Play("death_explosion");
         }
+        player1.GetComponent<Player>().GetArrows().ArrowVisibility(false);
+        player2.GetComponent<Player>().GetArrows().ArrowVisibility(false);
         playerPlaying = PlayerTurns.transitioning;
         SoundManager.instance.PlayDeathSound();
         StartCoroutine(MatchEndDelay()); //moving things here for match end feel & feedback
@@ -322,19 +329,23 @@ public class GameManager : MonoBehaviour
     {
         if (whichOut == PlayerTurns.Player1)
         {
+            player1.GetComponent<Player>().GetArrows().ArrowVisibility(false);
             UiManager.instance.UnlockButton(0, PlayerTurns.Player2);
             UiManager.instance.UnlockButton(1, PlayerTurns.Player2);
             UiManager.instance.UnlockButton(2, PlayerTurns.Player2);
             UiManager.instance.TurnSwitchAnimations(whichOut);
             player2.GetComponent<Player>().RefreshSpecial();
+            player2.GetComponent<Player>().GetArrows().ArrowVisibility(true);
         }
         else
         {
+            player2.GetComponent<Player>().GetArrows().ArrowVisibility(false);
             UiManager.instance.UnlockButton(0, PlayerTurns.Player1);
             UiManager.instance.UnlockButton(1, PlayerTurns.Player1);
             UiManager.instance.UnlockButton(2, PlayerTurns.Player1);
             UiManager.instance.TurnSwitchAnimations(whichOut);
             player1.GetComponent<Player>().RefreshSpecial();
+            player1.GetComponent<Player>().GetArrows().ArrowVisibility(true);
         }
 
         yield return new WaitForSeconds(1f);
