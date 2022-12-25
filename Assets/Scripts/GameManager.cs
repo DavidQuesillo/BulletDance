@@ -78,21 +78,31 @@ public class GameManager : MonoBehaviour
         //print("initing match");
         if (gameStarted) {return; }
 
+        turn = 1;
+        UiManager.instance.UnlockButton(0, PlayerTurns.Player1);
+        UiManager.instance.UnlockButton(1, PlayerTurns.Player1);
+        UiManager.instance.UnlockButton(2, PlayerTurns.Player1);
+        UiManager.instance.UnlockButton(0, PlayerTurns.Player2);
+        UiManager.instance.UnlockButton(1, PlayerTurns.Player2);
+        UiManager.instance.UnlockButton(2, PlayerTurns.Player2);
+
         //randomizes which player starts
         if (Random.value < 0.5f)
         {
             playerPlaying = PlayerTurns.Player1;
 
-            actionsInTurn = player1.GetComponent<Player>().GetCharData().baseActions;
-            shotsInturn = player1.GetComponent<Player>().GetCharData().baseShots;
+            /*actionsInTurn = player1.GetComponent<Player>().GetCharData().baseActions;
+            shotsInturn = player1.GetComponent<Player>().GetCharData().baseShots;*/
+            
             //player2.GetComponent<PlayerInput>().enabled = false;
             //player1.GetComponent<PlayerInput>().enabled = true;
         }
         else
         {
             playerPlaying = PlayerTurns.Player2;
-            actionsInTurn = player2.GetComponent<Player>().GetCharData().baseActions;
-            shotsInturn = player2.GetComponent<Player>().GetCharData().baseShots;
+            /*actionsInTurn = player2.GetComponent<Player>().GetCharData().baseActions;
+            shotsInturn = player2.GetComponent<Player>().GetCharData().baseShots;*/
+
             //player1.GetComponent<PlayerInput>().enabled = false;
             //player2.GetComponent<PlayerInput>().enabled = true;
         }
@@ -103,6 +113,18 @@ public class GameManager : MonoBehaviour
 
         player1.SetActive(true); //then players are enabled and place themselves in grid
         player2.SetActive(true);
+
+        if (playerPlaying == PlayerTurns.Player1)
+        {
+            actionsInTurn = player1.GetComponent<Player>().GetCharData().baseActions;
+            shotsInturn = player1.GetComponent<Player>().GetCharData().baseShots;
+        }
+        else
+        {
+            actionsInTurn = player2.GetComponent<Player>().GetCharData().baseActions;
+            shotsInturn = player2.GetComponent<Player>().GetCharData().baseShots;
+
+        }
                 
         UiManager.instance.UpdateActions(actionsInTurn, playerPlaying); //display actions of the player
         UiManager.instance.UpdateShots(shotsInturn, playerPlaying);
@@ -165,7 +187,7 @@ public class GameManager : MonoBehaviour
     public void SpendSpecial()
     {
         usedSpecial = true;
-        if (shotsInturn <= 0 && actionsInTurn <= 0)
+        if (shotsInturn <= 0 && actionsInTurn <= 0 && usedSpecial)
         {
             TurnEnd();
         }

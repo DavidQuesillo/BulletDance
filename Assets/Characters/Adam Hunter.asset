@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d461183a78d7d7842bae827765d00cd1, type: 3}
   m_Name: Adam Hunter
   m_EditorClassIdentifier: 
-  hp: 1
+  hp: 2
   charSpecial: {fileID: 11400000, guid: 5ecf93de691f6ab42b2a50f35c81986c, type: 2}
   baseActions: 4
   baseShots: 4
@@ -21,4 +21,8 @@ MonoBehaviour:
   charName: Adam Hunter
   portrait: {fileID: 0}
   miniPortrait: {fileID: 0}
-  winQuote: I worked to be the best and I'll prove it as many times as I have to!
+  winQuote: I won't be bested until I've saved my world!
+  specialName: Triple Shot
+  specialDesc: Fire 3 bullets simultaneously!
+  specialImage: {fileID: 0}
+  gameSprite: {fileID: 2447945510713965149, guid: 435be462351ccf343ab30f7718099bd6, type: 3}

@@ -20,5 +20,9 @@ public class CharBase : ScriptableObject
     public Sprite portrait;
     public Sprite miniPortrait;
     public string winQuote;
-    
+    public string specialName;
+    public string specialDesc;
+    public Sprite specialImage;
+    public Sprite gameSprite;
+
 }

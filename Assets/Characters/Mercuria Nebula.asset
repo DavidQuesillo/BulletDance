@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 3
   charSpecial: {fileID: 11400000, guid: 97ecac259099e1243afda9fb3e54e2ea, type: 2}
-  baseActions: 2
+  baseActions: 3
   baseShots: 5
   animations: {fileID: 9100000, guid: 9dc29ca7628486f47b137db5c7470d55, type: 2}
   specialClip: {fileID: 8300000, guid: 3aece4bff3b2028409c1eaf08374f730, type: 3}
@@ -22,3 +22,8 @@ MonoBehaviour:
   portrait: {fileID: 0}
   miniPortrait: {fileID: 0}
   winQuote: YEAH!!! This is how you get a mech pilot fired up!!
+  specialName: StarBuster Sword
+  specialDesc: Destroy all enemy bullets in an adjacent tile. Slashing the opponent
+    is an INSTANT KILL!!
+  specialImage: {fileID: 0}
+  gameSprite: {fileID: 7452483522817239403, guid: 782671025e1a1184b90988a85477f3c2, type: 3}

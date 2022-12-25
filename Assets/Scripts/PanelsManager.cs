@@ -14,13 +14,15 @@ public class PanelsManager : MonoBehaviour
     [SerializeField] private GameObject game;
     [SerializeField] private GameObject result;
     [SerializeField] private GameObject pause;
-    private bool charSelReady = true; //TESTING, MUST BE FALSE
+    private bool charSelReady = false; //TESTING, MUST BE FALSE
     [SerializeField] private bool paused;
     [Header("Default Panels Buttons")]
     [SerializeField] private GameObject returnButton;
     [SerializeField] private GameObject playButton;
 
     public static PanelsManager instance;
+    [Header("CharSelect Script")]
+    [SerializeField] private CharSelect selectScript;
 
     private void Awake()
     {
@@ -45,10 +47,12 @@ public class PanelsManager : MonoBehaviour
                     GoToSelect();
                     break;
                 case Screens.Select:
-                    if (charSelReady)
+                    /*if (charSelReady)
                     {
-                        StartGame();
-                    }
+                        //StartGame();
+                        selectScript.StartGame(ctx);
+                    }*/
+                    selectScript.StartGame(ctx);
                     break;
                 case Screens.Gameplay:
                     if (paused)

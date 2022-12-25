@@ -519,6 +519,60 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "charA1",
+                    "type": "Button",
+                    "id": "3961a8c5-1799-432c-b3db-f9db1406f8a1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "charB1",
+                    "type": "Button",
+                    "id": "6ec711e6-72fb-40e4-856c-b5ae51b93a9f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "charC1",
+                    "type": "Button",
+                    "id": "47d2bbd3-0b17-421b-a498-2c2ffc5e8868",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "charA2",
+                    "type": "Button",
+                    "id": "7bdc72a6-8704-4d12-bf7a-af79f3541917",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "charB2",
+                    "type": "Button",
+                    "id": "e4d8c0a5-b535-4ab6-852d-4938eebcb42a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "charC2",
+                    "type": "Button",
+                    "id": "751de676-c1a6-4a3c-ba11-0dbd63ba9450",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1344,6 +1398,72 @@
                     "processors": "",
                     "groups": "default",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39d9a65f-73fd-45f6-877f-b034873bc20f",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "charA1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "46d9dbc3-751e-4de2-a714-5ae5b4510a3e",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "charB1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "18651f5d-3998-4c4e-988d-ad13648816e8",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "charC1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9471a70a-af00-4d32-9a6d-5b3e93add2b3",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "charA2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2693b418-ffb1-49fc-8eb2-06de498d0430",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "charB2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fb5d03d0-c52d-4e76-a1e3-d1396215ea58",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "charC2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

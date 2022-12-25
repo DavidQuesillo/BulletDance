@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     private bool specialAvailable = true;
 
     [Header("Character Data")]
-    [SerializeField] private CharBase charData;
+    public CharBase charData; //FIX THIS ENCAPSULATION IF AT ALL POSSIBLE
     private int baseActions;
     private int baseShots;
     [SerializeField] private SpecialAction special; //modified, must be SpecialAction
@@ -47,6 +47,7 @@ public class Player : MonoBehaviour
 
         baseActions = charData.baseActions;
         baseShots = charData.baseShots;
+        specialAvailable = true;
         hp = charData.hp;
         special = charData.charSpecial; //intended way, on placeholder
         special.SetupSpecial(this, gameObject);
@@ -80,6 +81,10 @@ public class Player : MonoBehaviour
     public CharBase GetCharData()
     {
         return charData;
+    }
+    public void SetCharData(CharBase data)
+    {
+        charData = data;
     }
     public PlayerTurns GetWhichPlayer()
     {
@@ -302,7 +307,7 @@ public class Player : MonoBehaviour
             if (special.ActivateSpecial(dir, whichPlayer, this))
             {
                 specialAvailable = false;
-                GameManager.instance.SpendSpecial();
+                GameManager.instance.SpendSpecial(); //may need to change depending on function of certain specials
                 SoundManager.instance.PlaySpecialSound(charData.specialClip);
                 //UiManager.instance.LockButton(2, whichPlayer);
             }

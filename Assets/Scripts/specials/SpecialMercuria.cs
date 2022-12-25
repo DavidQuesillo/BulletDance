@@ -140,7 +140,7 @@ public class SpecialMercuria : SpecialAction
     public override void EndSpecial()
     {
         base.EndSpecial();
-        GameManager.instance.SpendSpecial();
+        //GameManager.instance.SpendSpecial();
         
     }
 
