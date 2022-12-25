@@ -13,6 +13,7 @@ public class CharSelect : MonoBehaviour
     [SerializeField] private bool p2Picked;
     [SerializeField] private SelectableCharacters p1Char;
     [SerializeField] private SelectableCharacters p2Char;
+    [SerializeField] private Image startButton;
 
     [Header("Characters Data")]
     [SerializeField] private CharBase CharAdam;
@@ -52,6 +53,7 @@ public class CharSelect : MonoBehaviour
         p2Picked = false;
         p1Char = SelectableCharacters.Adam;
         p2Char = SelectableCharacters.Mercuria; //whoever is the furthest right on the screen? doesnt really matter
+        startButton.gameObject.SetActive(false);
 
         MakeInfoVisible(false, PlayerTurns.Player1);
         MakeInfoVisible(false, PlayerTurns.Player2);
@@ -97,6 +99,7 @@ public class CharSelect : MonoBehaviour
             DisplaySelection(PlayerTurns.Player1, SelectableCharacters.Adam);
             SelectionHighlight(0, PlayerTurns.Player1);
             p1Char = SelectableCharacters.Adam;
+            CheckIfBothSelected();
         }        
     }
     public void SelectP1Mercuria(InputAction.CallbackContext ctx)
@@ -107,6 +110,7 @@ public class CharSelect : MonoBehaviour
             DisplaySelection(PlayerTurns.Player1, SelectableCharacters.Mercuria);
             SelectionHighlight(1, PlayerTurns.Player1);
             p1Char = SelectableCharacters.Mercuria;
+            CheckIfBothSelected();
         }        
     }
     public void SelectP2Adam(InputAction.CallbackContext ctx)
@@ -117,6 +121,7 @@ public class CharSelect : MonoBehaviour
             DisplaySelection(PlayerTurns.Player2, SelectableCharacters.Adam);
             SelectionHighlight(0, PlayerTurns.Player2);
             p2Char = SelectableCharacters.Adam;
+            CheckIfBothSelected();
         }        
     }
     public void SelectP2Mercuria(InputAction.CallbackContext ctx)
@@ -127,8 +132,18 @@ public class CharSelect : MonoBehaviour
             DisplaySelection(PlayerTurns.Player2, SelectableCharacters.Mercuria);
             SelectionHighlight(1, PlayerTurns.Player2);
             p2Char = SelectableCharacters.Mercuria;
+            CheckIfBothSelected();
         }        
     }
+
+    public void CheckIfBothSelected()
+    {
+        if (p1Picked && p2Picked)
+        {
+            startButton.gameObject.SetActive(true);
+        }
+    }
+
     /*public void SelectP2Char(InputAction.CallbackContext ctx, SelectableCharacters selection)
     {
         if (ctx.started)

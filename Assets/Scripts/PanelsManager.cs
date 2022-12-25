@@ -16,6 +16,7 @@ public class PanelsManager : MonoBehaviour
     [SerializeField] private GameObject pause;
     private bool charSelReady = false; //TESTING, MUST BE FALSE
     [SerializeField] private bool paused;
+    [SerializeField] private GameObject pauseInstruction;
     [Header("Default Panels Buttons")]
     [SerializeField] private GameObject returnButton;
     [SerializeField] private GameObject playButton;
@@ -98,6 +99,7 @@ public class PanelsManager : MonoBehaviour
         Time.timeScale = 0f;
         GameManager.instance.paused = true;
         paused = true;
+        pauseInstruction.SetActive(false);
         pause.SetActive(true);
     }
     public void Unpause()
@@ -105,6 +107,7 @@ public class PanelsManager : MonoBehaviour
         Time.timeScale = 1f;
         GameManager.instance.paused = false;
         paused = false;
+        pauseInstruction.SetActive(true);
         pause.SetActive(false);
     }
     public void SetSelectReady()
