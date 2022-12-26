@@ -23,6 +23,6 @@ MonoBehaviour:
   miniPortrait: {fileID: 0}
   winQuote: I won't be bested until I've saved my world!
   specialName: Triple Shot
-  specialDesc: Fire 3 bullets simultaneously!
-  specialImage: {fileID: 0}
+  specialDesc: Fire a column of 3 bullets simultaneously!
+  specialImage: {fileID: 21300000, guid: 5a9941e8c3a4a6140a7b724d043542cf, type: 3}
   gameSprite: {fileID: 2447945510713965149, guid: 435be462351ccf343ab30f7718099bd6, type: 3}
