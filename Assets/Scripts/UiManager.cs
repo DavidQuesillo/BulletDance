@@ -11,6 +11,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI turnNumber;
 
     [Header("Player 1 side")]
+    [SerializeField] private Image icon1;
     [SerializeField] private TextMeshProUGUI hp1;
     [SerializeField] private TextMeshProUGUI ActionCount1;
     [SerializeField] private Image glow1;
@@ -20,6 +21,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI charName1;
 
     [Header("Player 2 side")]
+    [SerializeField] private Image icon2;
     [SerializeField] private TextMeshProUGUI hp2;
     [SerializeField] private TextMeshProUGUI ActionCount2;
     [SerializeField] private Image glow2;
@@ -63,10 +65,12 @@ public class UiManager : MonoBehaviour
         if (whichPlayer == PlayerTurns.Player1)
         {
             charName1.text = data.charName;
+            icon1.sprite = data.miniPortrait;
         }
         else
         {
             charName2.text = data.charName;
+            icon2.sprite = data.miniPortrait;
         }
     }
     public void SetVictorInfo(CharBase wInfo)
