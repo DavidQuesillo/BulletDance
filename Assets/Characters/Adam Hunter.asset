@@ -19,8 +19,8 @@ MonoBehaviour:
   animations: {fileID: 9100000, guid: a4fd25e3d7e6c30479361de8b13951e1, type: 2}
   specialClip: {fileID: 8300000, guid: c50fd3f8c40129648a86d82b98b034e9, type: 3}
   charName: Adam Hunter
-  portrait: {fileID: 0}
-  miniPortrait: {fileID: 0}
+  portrait: {fileID: 7637650832402333878, guid: 435be462351ccf343ab30f7718099bd6, type: 3}
+  miniPortrait: {fileID: -8688313538382652049, guid: 435be462351ccf343ab30f7718099bd6, type: 3}
   winQuote: I won't be bested until I've saved my world!
   specialName: Triple Shot
   specialDesc: Fire a column of 3 bullets simultaneously!

@@ -19,11 +19,11 @@ MonoBehaviour:
   animations: {fileID: 9100000, guid: 9dc29ca7628486f47b137db5c7470d55, type: 2}
   specialClip: {fileID: 8300000, guid: 3aece4bff3b2028409c1eaf08374f730, type: 3}
   charName: Mercuria Nebula
-  portrait: {fileID: 0}
-  miniPortrait: {fileID: 0}
+  portrait: {fileID: -1436203539285888413, guid: 5e21b6710779ad64bbf858d430d8e3e7, type: 3}
+  miniPortrait: {fileID: 4453334653467825391, guid: 5dafef91d4f17b546b81f28462d7c98d, type: 3}
   winQuote: YEAH!!! This is how you get a mech pilot fired up!!
   specialName: StarBuster Sword
   specialDesc: Destroy all enemy bullets in an adjacent tile. Slashing the opponent
     is an INSTANT KILL!!
-  specialImage: {fileID: 0}
+  specialImage: {fileID: 21300000, guid: 7cfa2f8f2a7995b489f7dda40d36ee57, type: 3}
   gameSprite: {fileID: 7452483522817239403, guid: 782671025e1a1184b90988a85477f3c2, type: 3}
