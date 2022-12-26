@@ -19,11 +19,13 @@ public class MusicManager : MonoBehaviour
 
     public void PlayBattleMusic()
     {
+        aus.volume = 0.6f;
         aus.clip = battleSongs[Random.Range(0, battleSongs.Count)];
         aus.Play();
     }
     public void PlayBattleMusic(int songIndex)
     {
+        aus.volume = 0.6f;
         aus.clip = battleSongs[songIndex];
         aus.Play();
     }

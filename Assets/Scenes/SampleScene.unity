@@ -17558,7 +17558,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.2
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -17656,10 +17656,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aus: {fileID: 1875639626}
   battleSongs:
-  - {fileID: 8300000, guid: 104a8138209dc764f82e9432a88e8c9c, type: 3}
-  - {fileID: 8300000, guid: a3790c90e03ea464ca222f4cccdbfa0a, type: 3}
-  - {fileID: 8300000, guid: db43ac742b5b1b944865140d91ad8e0a, type: 3}
-  winSong: {fileID: 8300000, guid: 4043dc0bf22106740a111b5b37a548a8, type: 3}
+  - {fileID: 8300000, guid: 5469784564a07174ca6099b29e845330, type: 3}
+  - {fileID: 8300000, guid: 47317fbb31a263443ab99f45a8320188, type: 3}
+  winSong: {fileID: 8300000, guid: 825206c747bba6c4c976a3cef322e1b6, type: 3}
 --- !u!1 &1905770697
 GameObject:
   m_ObjectHideFlags: 0
@@ -18761,7 +18760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.22423355, y: 0.33093175}
   m_AnchorMax: {x: 0.77576643, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.0000038146973}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: -0.0000076293945}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1992545070

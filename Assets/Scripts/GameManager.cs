@@ -288,9 +288,12 @@ public class GameManager : MonoBehaviour
     public void ClearForTitle()
     {
         MusicManager.instance.StopBattleMusic();
+        playerPlaying = PlayerTurns.transitioning;
         //disable players
         player1.SetActive(false);
         player2.SetActive(false);
+        player1.GetComponent<Player>().GetArrows().ArrowVisibility(false);
+        player2.GetComponent<Player>().GetArrows().ArrowVisibility(false);
 
         //call event for anything else to close
         onMatchEnd();
