@@ -10,6 +10,7 @@ public class SpecialMercuria : SpecialAction
     //private Player parentPlayer;
     public override void SetupSpecial(Player player, GameObject gobj)
     {
+        Debug.Log(player.name);
         //base.SetupSpecial();
         GameObject s = Instantiate(sword, player.transform);
         s.GetComponent<SpriteRenderer>().color = player.GetSpriteRend().color;
@@ -129,6 +130,7 @@ public class SpecialMercuria : SpecialAction
                 Sword.transform.SetPositionAndRotation(tilehit.transform.position, new Quaternion(0, 0, 315f, 0));
             }*/
 
+            Sword.GetComponent<SpriteRenderer>().color = sourcePlayer.GetSpriteRend().color;
             Sword.transform.position = tilehit.transform.position;
             Sword.transform.right = sourcePlayer.transform.position - Sword.transform.position;
             EndSpecial();
