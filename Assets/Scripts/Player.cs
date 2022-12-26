@@ -318,6 +318,13 @@ public class Player : MonoBehaviour
                         return;
                     }
                     tilehit.GetComponent<Tile>().GetPlayerOnThis().TakeDamage();
+
+                    //from bullet destroy
+                    GameObject p = PoofPool.Instance.RequestPoolObject();
+                    p.transform.position = tilehit.transform.position;
+                    p.GetComponent<SpriteRenderer>().color = sr.color;
+                    p.GetComponent<Animator>().Play("bulletPoof");
+
                     SoundManager.instance.PlayShootSound();
                     GameManager.instance.SpendShot();
                     //GameManager.instance.SpendAction();
