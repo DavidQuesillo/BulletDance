@@ -252,18 +252,20 @@ public class GameManager : MonoBehaviour
         UiManager.instance.UpdateShots(shotsInturn, playerPlaying);
     }
 
-    public void MatchEnd(PlayerTurns whoLost)
+    public void MatchEnd(PlayerTurns whoLost, Vector3 explosionPos)
     {
         if (whoLost == PlayerTurns.Player1)
         {
             winner = player2.GetComponent<Player>();
-            endExplosion.transform.position = player1.transform.position;
+            //endExplosion.transform.position = player1.transform.position;
+            endExplosion.transform.position = explosionPos;
             endExplosion.GetComponent<Animator>().Play("death_explosion");
         }
         else
         {
             winner = player1.GetComponent<Player>();
-            endExplosion.transform.position = player2.transform.position;
+            //endExplosion.transform.position = player2.transform.position;
+            endExplosion.transform.position = explosionPos;
             endExplosion.GetComponent<Animator>().Play("death_explosion");
         }
         player1.GetComponent<Player>().GetArrows().ArrowVisibility(false);

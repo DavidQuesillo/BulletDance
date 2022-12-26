@@ -122,6 +122,16 @@ public class Player : MonoBehaviour
             PlayerDeath();
         }
     }
+    public void TakeDamage(Vector3 deathLocation)
+    {
+        print("taking damage");
+        hp--;
+        UiManager.instance.UpdateHP(whichPlayer, hp);
+        if (hp <= 0)
+        {
+            PlayerDeath(deathLocation);
+        }
+    }
     public void Instakill()
     {
         hp = 0;
@@ -132,7 +142,12 @@ public class Player : MonoBehaviour
     {
         //placeholder
         sr.enabled = false;
-        GameManager.instance.MatchEnd(whichPlayer);
+        GameManager.instance.MatchEnd(whichPlayer, tileOn.transform.position);
+    }
+    public void PlayerDeath(Vector3 explodePos)
+    {
+        sr.enabled = false;
+        GameManager.instance.MatchEnd(whichPlayer, explodePos);
     }
 
     public void CheckFacing()
@@ -207,10 +222,11 @@ public class Player : MonoBehaviour
                 {
                     if (tilehit.GetComponent<Tile>().GetIfEnemyBullet(whichPlayer))
                     {
-                        TakeDamage();
+                        TakeDamage(tilehit.transform.position);                        
                         print("player stepped on");
+                        //if (hp <= 0) { return; }
                         //tilehit.gameObject.SetActive(false);
-                        
+
                         //tilehit.GetComponent<Tile>().GetBulletOnThis().BulletDestroy(true); //the old method
 
                         //the new testing method
@@ -242,6 +258,8 @@ public class Player : MonoBehaviour
 
                         for (int i = 0; i < bCount; i++)
                         {
+                            print("count: " +i);
+                            print("tile count: " +tilehit.GetComponent<Tile>().GetBulletsList().Count);
                             tilehit.GetComponent<Tile>().SetAsBulletOff(bulletsToDelete[i]);
                             //bulletsToDelete[i].gameObject.SetActive(false);
                             bulletsToDelete[i].BulletDestroy(true);
@@ -326,6 +344,7 @@ public class Player : MonoBehaviour
     {
         moving = false;
         arrows.CheckAvailableMoves();
+        if (hp <= 0) { return;}
         GameManager.instance.SpendAction();        
         //this func replaces what happens in playermove coroutine
     }
