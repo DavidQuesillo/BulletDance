@@ -39,7 +39,7 @@ public class SpecialMercuria : SpecialAction
             if (tilehit.GetComponent<Tile>()
                 .GetIfEnemyBullet(sourcePlayer.GetWhichPlayer()))
             {
-                List<Bullet> bOnT = tilehit.GetComponent<Tile>().GetBulletsList();
+                /*List<Bullet> bOnT = tilehit.GetComponent<Tile>().GetBulletsList();
                 //Debug.Log("count on tile: " + tilehit.GetComponent<Tile>().GetBulletsList().Count.ToString());
                 //Debug.Log("Count on sword: " + bOnT.Count.ToString());
                 List<Bullet> bulletsToDelete = new List<Bullet>();
@@ -56,20 +56,21 @@ public class SpecialMercuria : SpecialAction
                         /*Debug.Log("Called " + i);
                         Debug.Log("bont count: " + bOnT.Count);
                         Debug.Log("start count: "+ bCount);*/
-                        bulletsToDelete.Add(bOnT[i]);
-                    }
+                       /* bulletsToDelete.Add(bOnT[i]);
+                    }*/
                     /*else
                     {
                         Debug.Log("its bc theyre misassigned");
                     }*/
-                }
+                /*}
 
                 for (int i = 0; i < bCount; i++)
                 {
                     tilehit.GetComponent<Tile>().SetAsBulletOff(bulletsToDelete[i]);
                     //bulletsToDelete[i].gameObject.SetActive(false);
                     bulletsToDelete[i].BulletDestroy(true);
-                }
+                }*/
+                tilehit.GetComponent<Tile>().ClearBulletsOfOpponent(sourcePlayer.GetWhichPlayer());
             }
 
             //the bullet straight ahead

@@ -257,8 +257,45 @@ public class Tile : MonoBehaviour
         playerOnThis = null;
         //transform.position = new Vector3(transform.position.x, transform.position.y, 0);
     }
+    public void ClearBulletsOfOpponent(PlayerTurns whoClearing)
+    {
+        Bullet[] staticArray = bullets.ToArray();
+        for (int i = 0; i < staticArray.Length; i++)
+        {
+            if (staticArray[i].shotByWho != whoClearing)
+            {
+                bullets.Remove(staticArray[i]);
+                staticArray[i].BulletDestroy(true);
+            }
 
-    private void EraseGrid()
+            /*if (whoClearing == PlayerTurns.Player1)
+            {
+                Bullet[] staticArray = bullets.ToArray();
+                for (int i = 0; i < staticArray.Length; i++)
+                {
+                    if (staticArray[i].shotByWho != whoClearing)
+                    {
+                        bullets.Remove(staticArray[i]);
+                        staticArray[i].BulletDestroy(true);
+                    }
+                }
+            }
+            else
+            {
+                Bullet[] staticArray = bullets.ToArray();
+                for (int i = 0; i < staticArray.Length; i++)
+                {
+                    if (staticArray[i].shotByWho != whoClearing)
+                    {
+                        bullets.Remove(staticArray[i]);
+                        staticArray[i].BulletDestroy(true);
+                    }
+
+                }
+            }*/
+        }
+    }
+        private void EraseGrid()
     {
         Destroy(gameObject);
     }

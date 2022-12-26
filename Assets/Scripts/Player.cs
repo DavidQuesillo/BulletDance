@@ -231,7 +231,7 @@ public class Player : MonoBehaviour
 
                         //the new testing method
                         #region the thing borrowed from mercuria´s sword
-                        List<Bullet> bOnT = tilehit.GetComponent<Tile>().GetBulletsList();
+                        /*List<Bullet> bOnT = tilehit.GetComponent<Tile>().GetBulletsList();
                         //Debug.Log("count on tile: " + tilehit.GetComponent<Tile>().GetBulletsList().Count.ToString());
                         //Debug.Log("Count on sword: " + bOnT.Count.ToString());
                         List<Bullet> bulletsToDelete = new List<Bullet>();
@@ -248,13 +248,13 @@ public class Player : MonoBehaviour
                                 /*Debug.Log("Called " + i);
                                 Debug.Log("bont count: " + bOnT.Count);
                                 Debug.Log("start count: "+ bCount);*/
-                                bulletsToDelete.Add(bOnT[i]);
-                            }
+                               /* bulletsToDelete.Add(bOnT[i]);
+                            }*/ //HERE TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
                             /*else
                             {
                                 Debug.Log("its bc theyre misassigned");
                             }*/
-                        }
+                        /*} //heres the odd----------------------------------------------------asdcasvddbsdfb
 
                         for (int i = 0; i < bCount; i++)
                         {
@@ -263,8 +263,10 @@ public class Player : MonoBehaviour
                             tilehit.GetComponent<Tile>().SetAsBulletOff(bulletsToDelete[i]);
                             //bulletsToDelete[i].gameObject.SetActive(false);
                             bulletsToDelete[i].BulletDestroy(true);
-                        }
+                        }*/
                         #endregion
+                        //trying different method using tile function
+                        tilehit.GetComponent<Tile>().ClearBulletsOfOpponent(whichPlayer);
                     }
                 }
                 //StartCoroutine(PlayerMove(tilehit.transform.position)); //here it is
