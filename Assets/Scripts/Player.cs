@@ -181,7 +181,7 @@ public class Player : MonoBehaviour
     public void TrackDir(InputAction.CallbackContext ctx)
     {
         dir = ctx.ReadValue<Vector2>();
-    
+        arrows.HighlightPointingArrow(dir); //currently testing
     }
 
     public void MoveInDir(InputAction.CallbackContext ctx)

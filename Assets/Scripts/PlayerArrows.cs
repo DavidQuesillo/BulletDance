@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class PlayerArrows : MonoBehaviour
 {
     [Header("Colors")]
@@ -62,6 +62,57 @@ public class PlayerArrows : MonoBehaviour
             whichArrow.color = unavColor;
         }
     }
+    public void HighlightPointingArrow(Vector2 dir)
+    {
+        #region diagonals
+        //Upright
+        /*if (dir == Vector2.right + Vector2.up) { arrowUR.transform.localScale = Vector3.one * 1.2f; return;}
+        else { arrowUR.transform.localScale = Vector3.one;}*/
+        IndependentArrowHighlightCheck(dir, Vector2.right + Vector2.up, arrowUR);
+
+        //upleft
+        /*if (dir == Vector2.left + Vector2.up) { arrowUL.transform.localScale = Vector3.one * 1.2f; return;}
+        else { arrowUL.transform.localScale = Vector3.one;}*/
+        IndependentArrowHighlightCheck(dir, Vector2.left + Vector2.up, arrowUL);
+
+        //downleft
+        /*if (dir == Vector2.left + Vector2.down) { arrowDL.transform.localScale = Vector3.one * 1.2f; return; }
+        else { arrowDL.transform.localScale = Vector3.one; }*/
+        IndependentArrowHighlightCheck(dir, Vector2.left + Vector2.down, arrowDL);
+
+        //downright
+        /*if (dir == Vector2.right + Vector2.down) { arrowDR.transform.localScale = Vector3.one * 1.2f; return; }
+        else { arrowDR.transform.localScale = Vector3.one; }*/
+        IndependentArrowHighlightCheck(dir, Vector2.right + Vector2.down, arrowDR);
+        #endregion
+        #region cardinals
+        //right
+        /*if (dir == Vector2.right) { arrowR.transform.localScale = Vector3.one * 1.2f; return;}
+        else { arrowR.transform.localScale = Vector3.one;}*/
+        IndependentArrowHighlightCheck(dir, Vector2.right, arrowR);
+
+        //left
+        /*if (dir == Vector2.left) { arrowL.transform.localScale = Vector3.one * 1.2f; return; }
+        else { arrowL.transform.localScale = Vector3.one; }*/
+        IndependentArrowHighlightCheck(dir, Vector2.left, arrowL);
+
+        //down
+        /*if (dir == Vector2.down) { arrowD.transform.localScale = Vector3.one * 1.2f; return; }
+        else { arrowD.transform.localScale = Vector3.one; }*/
+        IndependentArrowHighlightCheck(dir, Vector2.down, arrowD);
+
+        //up
+        /*if (dir == Vector2.up) { arrowU.transform.localScale = Vector3.one * 1.2f; return; }
+        else { arrowU.transform.localScale = Vector3.one; }*/
+        IndependentArrowHighlightCheck(dir, Vector2.up, arrowU);
+        #endregion
+    }
+    private void IndependentArrowHighlightCheck(Vector2 dir, Vector2 neededDir, SpriteRenderer whichArrow)
+    {
+        if (dir == neededDir) { whichArrow.transform.localScale = Vector3.one * 1.4f;}
+        else { whichArrow.transform.localScale = Vector3.one; }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
