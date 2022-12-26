@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip shootClip;
     [SerializeField] private AudioClip moveClip;
     [SerializeField] private AudioClip bulletAdvClip;
+    [SerializeField] private AudioClip bulletPoofClip;
     private bool bulletAdvPlayed;
     [SerializeField] private AudioClip actFailClip;
     [SerializeField] private AudioClip killSound;
@@ -40,6 +41,10 @@ public class SoundManager : MonoBehaviour
     public void PlayBulletsAdvSound()
     {
         if (!bulletAdvPlayed) { theBullPlayFunc();}        
+    }
+    public void PlayBulletPoofSound()
+    {
+        aus.PlayOneShot(bulletPoofClip);
     }
     private void theBullPlayFunc()
     {

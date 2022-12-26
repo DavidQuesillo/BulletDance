@@ -24,7 +24,7 @@ public class Bullet : MonoBehaviour
         bulletDelay = new WaitForSeconds(bulletMoveTimer);
 //        tileOn = Physics2D.Raycast(transform.position + (Vector3)dir, dir, 0.3f, LayerMask.GetMask("Grid")).collider.GetComponent<Tile>();
         GameManager.onPlayedMoved += AdvanceBullet;
-        GameManager.onMatchEnd += BulletDestroy;
+        GameManager.onMatchEnd += BulletDisable;
         //GameManager.onTurnSwitch += BecomeMovable;
     }
 
@@ -164,7 +164,8 @@ public class Bullet : MonoBehaviour
                 {
                     print("damage through here");
                     tileOn.GetPlayerOnThis().TakeDamage();
-                    BulletDestroy();
+                    //BulletDestroy(true); //old
+                    rb.DOMove(rb.position + dir, 0.2f).OnComplete(() => BulletDestroy(true)); //new testing
                 }
                 
             }
@@ -175,7 +176,7 @@ public class Bullet : MonoBehaviour
         else
         {
             outOfBounds = true;
-            rb.DOMove(rb.position + dir, 0.2f).OnComplete(() => BulletDestroy());
+            rb.DOMove(rb.position + dir, 0.2f).OnComplete(() => BulletDestroy(false));
 
 
             //tileOn.SetAsBulletOff(this); //done again in destroy function
@@ -213,13 +214,27 @@ public class Bullet : MonoBehaviour
         //SoundManager.instance.PlayBulletsAdvSound();
     }
 
-    public void BulletDestroy()
+    public void BulletDestroy(bool hitEnemy)
     {
+        if (hitEnemy)
+        {
+            GameObject p = PoofPool.Instance.RequestPoolObject();
+            p.transform.position = gameObject.transform.position;
+            p.GetComponent<SpriteRenderer>().color = sr.color;
+            p.GetComponent<Animator>().Play("bulletPoof");
+
+        }
 
         tileOn.SetAsBulletOff(this);
         gameObject.SetActive(false);
         hasToMove = false;
         //print("by bulletdestroy");
+    }
+    public void BulletDisable() //this exists literally entirely for onMatchEnd
+    {
+        tileOn.SetAsBulletOff(this);
+        gameObject.SetActive(false);
+        hasToMove = false;
     }
 
     public PlayerTurns GetWhose()

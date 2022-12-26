@@ -66,7 +66,8 @@ public class SpecialMercuria : SpecialAction
                 for (int i = 0; i < bCount; i++)
                 {
                     tilehit.GetComponent<Tile>().SetAsBulletOff(bulletsToDelete[i]);
-                    bulletsToDelete[i].gameObject.SetActive(false);
+                    //bulletsToDelete[i].gameObject.SetActive(false);
+                    bulletsToDelete[i].BulletDestroy(true);
                 }
             }
 

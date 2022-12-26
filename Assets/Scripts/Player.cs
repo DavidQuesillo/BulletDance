@@ -210,7 +210,43 @@ public class Player : MonoBehaviour
                         TakeDamage();
                         print("player stepped on");
                         //tilehit.gameObject.SetActive(false);
-                        tilehit.GetComponent<Tile>().GetBulletOnThis().BulletDestroy();
+                        
+                        //tilehit.GetComponent<Tile>().GetBulletOnThis().BulletDestroy(true); //the old method
+
+                        //the new testing method
+                        #region the thing borrowed from mercuria´s sword
+                        List<Bullet> bOnT = tilehit.GetComponent<Tile>().GetBulletsList();
+                        //Debug.Log("count on tile: " + tilehit.GetComponent<Tile>().GetBulletsList().Count.ToString());
+                        //Debug.Log("Count on sword: " + bOnT.Count.ToString());
+                        List<Bullet> bulletsToDelete = new List<Bullet>();
+                        int bCount = bOnT.Count;
+                        for (int i = 0; i < bCount; i++)
+                        {
+                            Debug.Log("Loop ran " + i);
+                            if (bOnT[i].GetWhose() != whichPlayer)
+                            {
+                                /*Bullet b = bOnT[i];
+                                //bOnT.Remove(b);
+                                tilehit.GetComponent<Tile>().SetAsBulletOff(b);
+                                b.gameObject.SetActive(false);*/
+                                /*Debug.Log("Called " + i);
+                                Debug.Log("bont count: " + bOnT.Count);
+                                Debug.Log("start count: "+ bCount);*/
+                                bulletsToDelete.Add(bOnT[i]);
+                            }
+                            /*else
+                            {
+                                Debug.Log("its bc theyre misassigned");
+                            }*/
+                        }
+
+                        for (int i = 0; i < bCount; i++)
+                        {
+                            tilehit.GetComponent<Tile>().SetAsBulletOff(bulletsToDelete[i]);
+                            //bulletsToDelete[i].gameObject.SetActive(false);
+                            bulletsToDelete[i].BulletDestroy(true);
+                        }
+                        #endregion
                     }
                 }
                 //StartCoroutine(PlayerMove(tilehit.transform.position)); //here it is
