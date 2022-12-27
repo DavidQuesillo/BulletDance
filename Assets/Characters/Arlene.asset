@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 1
   charSpecial: {fileID: 11400000, guid: 8383ae97d1f6bf04db6542a270b3b54f, type: 2}
-  baseActions: 5
+  baseActions: 4
   baseShots: 6
   animations: {fileID: 9100000, guid: 584eafe1f98c5e045b434af8cd35634b, type: 2}
   specialClip: {fileID: 8300000, guid: b9d26289d62304447848c3cc0214029a, type: 3}

@@ -15,7 +15,7 @@ MonoBehaviour:
   hp: 2
   charSpecial: {fileID: 11400000, guid: 5ecf93de691f6ab42b2a50f35c81986c, type: 2}
   baseActions: 4
-  baseShots: 4
+  baseShots: 6
   animations: {fileID: 9100000, guid: a4fd25e3d7e6c30479361de8b13951e1, type: 2}
   specialClip: {fileID: 8300000, guid: c50fd3f8c40129648a86d82b98b034e9, type: 3}
   charName: Adam Hunter

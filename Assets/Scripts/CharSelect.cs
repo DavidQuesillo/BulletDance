@@ -201,7 +201,7 @@ public class CharSelect : MonoBehaviour
             p2SpecImage.enabled = yesno;
 
             //p2Name.enabled = yesno;
-            if (!yesno) { p1Name.text = "Select your Character!"; }
+            if (!yesno) { p2Name.text = "Select your Character!"; }
             
             p2SpecName.gameObject.SetActive(yesno);
             p2SpecDesc.enabled = yesno;
@@ -329,7 +329,7 @@ public class CharSelect : MonoBehaviour
             p2Sprite.sprite = charData.gameSprite;
             p2hp.text = charData.hp + " HP";
             p2steps.text = charData.baseActions + " steps";
-            p2shots.text = charData.baseShots + " steps";
+            p2shots.text = charData.baseShots + " shots";
         }
     }
     public void StartGame(InputAction.CallbackContext ctx)

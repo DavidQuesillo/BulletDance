@@ -294,6 +294,7 @@ public class GameManager : MonoBehaviour
         player2.SetActive(false);
         player1.GetComponent<Player>().GetArrows().ArrowVisibility(false);
         player2.GetComponent<Player>().GetArrows().ArrowVisibility(false);
+        paused = false;
 
         //call event for anything else to close
         onMatchEnd();
