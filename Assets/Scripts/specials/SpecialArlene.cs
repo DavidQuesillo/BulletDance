@@ -130,6 +130,7 @@ public class SpecialArlene : SpecialAction
                 }
             }
             else { return false;}
+            UiManager.instance.LockButton(2, whichPlayer);
             return true;
         }
         return false;
