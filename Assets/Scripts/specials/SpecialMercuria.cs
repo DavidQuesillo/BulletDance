@@ -21,23 +21,22 @@ public class SpecialMercuria : SpecialAction
     {
         //base.ActivateSpecial(dir, whichPlayer, sourcePlayer);
 
-        Collider2D tilehit = Physics2D.Raycast(sourcePlayer.transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+        Tile tilehit = Physics2D.Raycast(sourcePlayer.transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
 
         if (tilehit != null)
         {
             #region The central bullet
-            if (tilehit.GetComponent<Tile>().GetIfPlayerOn()) //check if the enemy is on the tile you're shooting
+            if (tilehit.GetIfPlayerOn()) //check if the enemy is on the tile you're shooting
             {
-                if (tilehit.GetComponent<Tile>().GetPlayerOnThis() == this)
+                if (tilehit.GetPlayerOnThis() == this)
                 {
                     Debug.Log("its the same playu7er");
                     return false;
                 }
-                tilehit.GetComponent<Tile>().GetPlayerOnThis().Instakill();
+                tilehit.GetPlayerOnThis().Instakill();
                 //return;
             }
-            if (tilehit.GetComponent<Tile>()
-                .GetIfEnemyBullet(sourcePlayer.GetWhichPlayer()))
+            if (tilehit.GetIfEnemyBullet(sourcePlayer.GetWhichPlayer()))
             {
                 /*List<Bullet> bOnT = tilehit.GetComponent<Tile>().GetBulletsList();
                 //Debug.Log("count on tile: " + tilehit.GetComponent<Tile>().GetBulletsList().Count.ToString());
@@ -70,7 +69,7 @@ public class SpecialMercuria : SpecialAction
                     //bulletsToDelete[i].gameObject.SetActive(false);
                     bulletsToDelete[i].BulletDestroy(true);
                 }*/
-                tilehit.GetComponent<Tile>().ClearBulletsOfOpponent(sourcePlayer.GetWhichPlayer());
+                tilehit.ClearBulletsOfOpponent(sourcePlayer.GetWhichPlayer());
             }
 
             //the bullet straight ahead

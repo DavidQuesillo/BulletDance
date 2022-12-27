@@ -207,20 +207,20 @@ public class Player : MonoBehaviour
                 || dir == Vector2.zero || GameManager.instance.GetActionsInTurn() <= 0)
             { return;    }
 
-            Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+            Tile tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
 
             //print(tilehit.gameObject.name);
             if (tilehit != null)
             {
-                if (tilehit.GetComponent<Tile>().GetIfPlayerOn())
+                if (tilehit.GetIfPlayerOn())
                 {
                     return;
                 }
                 SoundManager.instance.PlayStepSound();
                 //rb.MovePosition(tilehit.transform.position); //replace with tween
-                if (tilehit.GetComponent<Tile>().GetIfBullet())
+                if (tilehit.GetIfBullet())
                 {
-                    if (tilehit.GetComponent<Tile>().GetIfEnemyBullet(whichPlayer))
+                    if (tilehit.GetIfEnemyBullet(whichPlayer))
                     {
                         TakeDamage(tilehit.transform.position);                        
                         print("player stepped on");
@@ -266,7 +266,7 @@ public class Player : MonoBehaviour
                         }*/
                         #endregion
                         //trying different method using tile function
-                        tilehit.GetComponent<Tile>().ClearBulletsOfOpponent(whichPlayer);
+                        tilehit.ClearBulletsOfOpponent(whichPlayer);
                     }
                 }
                 //StartCoroutine(PlayerMove(tilehit.transform.position)); //here it is
@@ -276,7 +276,7 @@ public class Player : MonoBehaviour
                 tileOn.SetAsPlayerOff();
                 //tilehit.GetComponent<Tile>().SetAsPlayerOn(whichPlayer);
 
-                tileOn = tilehit.GetComponent<Tile>();
+                tileOn = tilehit;
                 tileOn.SetAsPlayerOn(this);
 
                 CheckFacing();
@@ -300,24 +300,24 @@ public class Player : MonoBehaviour
                 || dir == Vector2.zero || GameManager.instance.GetShotsInTurn() <= 0)
             {  return;      }
 
-            Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+            Tile tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
 
             if (tilehit != null)
             {
                 
-                if (tilehit.GetComponent<Tile>().GetIfSameDirBullet(dir))
+                if (tilehit.GetIfSameDirBullet(dir))
                 {
                     print("had same dir");
                     return;
                 }
-                if (tilehit.GetComponent<Tile>().GetIfPlayerOn()) // check if the enemy is on the tile you're shooting
+                if (tilehit.GetIfPlayerOn()) // check if the enemy is on the tile you're shooting
                 {
-                    if (tilehit.GetComponent<Tile>().GetPlayerOnThis() == this)
+                    if (tilehit.GetPlayerOnThis() == this)
                     {
                         Debug.Log("its the same playu7er");
                         return;
                     }
-                    tilehit.GetComponent<Tile>().GetPlayerOnThis().TakeDamage();
+                    tilehit.GetPlayerOnThis().TakeDamage();
 
                     //from bullet destroy
                     GameObject p = PoofPool.Instance.RequestPoolObject();
@@ -340,7 +340,7 @@ public class Player : MonoBehaviour
                 GameManager.instance.SpendShot();
                 b.transform.position = tilehit.transform.position;
                 b.SetActive(true);
-                b.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), this);
+                b.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit, this);
                 SoundManager.instance.PlayShootSound();
 
 

@@ -10,19 +10,19 @@ public class SpecialAdamH : SpecialAction
         if (Rtile == null) { return;}
         //GameObject r = BulletPool.Instance.RequestPoolObject();
         //same necessary checks as a normal shot
-        if (Rtile.GetComponent<Tile>().GetIfSameDirBullet(dirr))
+        if (Rtile.GetIfSameDirBullet(dirr))
         {
             //print("had same dir");
             return;
         }
-        if (Rtile.GetComponent<Tile>().GetIfPlayerOn()) // check if the enemy is on the tile you're shooting
+        if (Rtile.GetIfPlayerOn()) // check if the enemy is on the tile you're shooting
         {
-            if (Rtile.GetComponent<Tile>().GetPlayerOnThis() == this)
+            if (Rtile.GetPlayerOnThis() == this)
             {
                 Debug.Log("its the same playu7er");
                 return;
             }
-            Rtile.GetComponent<Tile>().GetPlayerOnThis().TakeDamage();
+            Rtile.GetPlayerOnThis().TakeDamage();
             //GameManager.instance.SpendAction();
             return;
         }
@@ -37,7 +37,7 @@ public class SpecialAdamH : SpecialAction
 
     public override bool ActivateSpecial(Vector2 dir, PlayerTurns whichPlayer, Player sourcePlayer)
     {
-        Collider2D tilehit = Physics2D.Raycast(sourcePlayer.transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+         Tile tilehit = Physics2D.Raycast(sourcePlayer.transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
 
         if (tilehit != null)
         {
@@ -46,21 +46,21 @@ public class SpecialAdamH : SpecialAction
             GameObject b = BulletPool.Instance.RequestPoolObject();
             //b.SetActive(false);
 
-            if (tilehit.GetComponent<Tile>().GetIfSameDirBullet(dir))
+            if (tilehit.GetIfSameDirBullet(dir))
             {
                 //print("had same dir");
              //   return;
                 b.SetActive(false);
                 return false;
             }
-            else if (tilehit.GetComponent<Tile>().GetIfPlayerOn()) //check if the enemy is on the tile you're shooting
+            else if (tilehit.GetIfPlayerOn()) //check if the enemy is on the tile you're shooting
             {
-                if (tilehit.GetComponent<Tile>().GetPlayerOnThis() == this)
+                if (tilehit.GetPlayerOnThis() == this)
                 {
                     Debug.Log("its the same playu7er");
                     return false;
                 }
-                tilehit.GetComponent<Tile>().GetPlayerOnThis().TakeDamage();
+                tilehit.GetPlayerOnThis().TakeDamage();
                 b.SetActive(false);
                 //GameManager.instance.SpendAction();
                 //return;
@@ -74,7 +74,7 @@ public class SpecialAdamH : SpecialAction
 
                 b.transform.position = tilehit.transform.position;
                 b.SetActive(true);
-                b.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit.GetComponent<Tile>(), sourcePlayer);
+                b.GetComponent<Bullet>().BulletInit(whichPlayer, dir, tilehit, sourcePlayer);
             }
             
             

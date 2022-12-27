@@ -141,7 +141,7 @@ public class Bullet : MonoBehaviour
             //hasToMove = true;
             return;
         }
-        Collider2D tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider;
+        Tile tilehit = Physics2D.Raycast(transform.position + (Vector3)dir * 0.5f, dir, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
 
         if (tilehit != null)
         {
@@ -151,8 +151,8 @@ public class Bullet : MonoBehaviour
             //rb.DOMove(tilehit.transform.position, 0.5f);
             //)
             tileOn.SetAsBulletOff(this);
-            tilehit.GetComponent<Tile>().SetAsBulletOn(shotByWho, this, LetterDir);
-            tileOn = tilehit.GetComponent<Tile>();
+            tilehit.SetAsBulletOn(shotByWho, this, LetterDir);
+            tileOn = tilehit;
 
             if (tileOn.GetIfPlayerOn())
             {
