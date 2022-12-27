@@ -18,6 +18,7 @@ public class CharSelect : MonoBehaviour
     [Header("Characters Data")]
     [SerializeField] private CharBase CharAdam;
     [SerializeField] private CharBase CharMercuria;
+    [SerializeField] private CharBase CharArlene;
 
     [Header("Select Display")]
     [SerializeField] private Image[] buttons1 = new Image[2];
@@ -113,6 +114,17 @@ public class CharSelect : MonoBehaviour
             CheckIfBothSelected();
         }        
     }
+    public void SelectP1Arlene(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            p1Picked = true;
+            DisplaySelection(PlayerTurns.Player1, SelectableCharacters.Arlene);
+            SelectionHighlight(2, PlayerTurns.Player1);
+            p1Char = SelectableCharacters.Arlene;
+            CheckIfBothSelected();
+        }
+    }
     public void SelectP2Adam(InputAction.CallbackContext ctx)
     {
         if (ctx.started)
@@ -134,6 +146,17 @@ public class CharSelect : MonoBehaviour
             p2Char = SelectableCharacters.Mercuria;
             CheckIfBothSelected();
         }        
+    }
+    public void SelectP2Arlene(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            p2Picked = true;
+            DisplaySelection(PlayerTurns.Player2, SelectableCharacters.Arlene);
+            SelectionHighlight(2, PlayerTurns.Player2);
+            p2Char = SelectableCharacters.Arlene;
+            CheckIfBothSelected();
+        }
     }
 
     public void CheckIfBothSelected()
@@ -223,6 +246,7 @@ public class CharSelect : MonoBehaviour
                 case SelectableCharacters.Shouko:
                     break;
                 case SelectableCharacters.Arlene:
+                    SetSelectedData(PlayerTurns.Player1, CharArlene);
                     break;
                 default:
                     MakeInfoVisible(false, whichPlayer);
@@ -265,6 +289,7 @@ public class CharSelect : MonoBehaviour
                 case SelectableCharacters.Shouko:
                     break;
                 case SelectableCharacters.Arlene:
+                    SetSelectedData(PlayerTurns.Player2, CharArlene);
                     break;
                 default:
                     MakeInfoVisible(false, whichPlayer);
@@ -331,6 +356,7 @@ public class CharSelect : MonoBehaviour
                     case SelectableCharacters.Shouko:
                         break;
                     case SelectableCharacters.Arlene:
+                        one.charData = CharArlene;
                         break;
                     default:
                         break;
@@ -350,6 +376,7 @@ public class CharSelect : MonoBehaviour
                     case SelectableCharacters.Shouko:
                         break;
                     case SelectableCharacters.Arlene:
+                        two.charData = CharArlene;
                         break;
                     default:
                         break;

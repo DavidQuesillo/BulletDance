@@ -44,7 +44,7 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //GameManager.onMatchEnd += EraseGrid;
+        GameManager.onMatchEnd += EraseGrid;
     }
 
     // Update is called once per frame
@@ -297,6 +297,11 @@ public class Tile : MonoBehaviour
     }
         private void EraseGrid()
     {
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        bullets.Clear();
+        dirs.Clear();
+        isBullet = false;
+        isPlayer = false;
+        SetAsPlayerOff();
     }
 }
