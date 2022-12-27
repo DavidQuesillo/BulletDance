@@ -212,8 +212,9 @@ public class Player : MonoBehaviour
             //print(tilehit.gameObject.name);
             if (tilehit != null)
             {
-                if (tilehit.GetIfPlayerOn())
+                if (tilehit.GetIfPlayerOn() && tilehit.GetPlayerOnThis() != this)
                 {
+                    SoundManager.instance.PlayFailSound();
                     return;
                 }
                 SoundManager.instance.PlayStepSound();
@@ -284,6 +285,10 @@ public class Player : MonoBehaviour
                 //GameManager.instance.SpendAction();
                 //print("moved to " + tilehit.name);
             }
+            else
+            {
+                SoundManager.instance.PlayFailSound();
+            }
             /*else
             {
                 print("move fail");
@@ -308,6 +313,7 @@ public class Player : MonoBehaviour
                 if (tilehit.GetIfSameDirBullet(dir))
                 {
                     print("had same dir");
+                    SoundManager.instance.PlayFailSound();
                     return;
                 }
                 if (tilehit.GetIfPlayerOn()) // check if the enemy is on the tile you're shooting
@@ -345,6 +351,10 @@ public class Player : MonoBehaviour
 
 
                 print(dir.ToString()); //debug what dir the bullet is getting
+            }
+            else
+            {
+                SoundManager.instance.PlayFailSound();
             }
         }
     }
