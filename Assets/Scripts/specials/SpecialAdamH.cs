@@ -87,9 +87,9 @@ public class SpecialAdamH : SpecialAction
             ////the cardinal direction are gotten from the player's cardinals. Diagonals are gotten from the bullet's
             if (b.GetComponent<Bullet>().GetDir() == bulletDirs.L)
             {
-                Tile leftTile = Physics2D.Raycast(b.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
+                Tile leftTile = Physics2D.Raycast(b.transform.position + Vector3.right * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
                 SideBullet(dir, whichPlayer, sourcePlayer, leftTile);
-                Tile rightTile = Physics2D.Raycast(b.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
+                Tile rightTile = Physics2D.Raycast(b.transform.position + Vector3.right * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
                 SideBullet(dir, whichPlayer, sourcePlayer, rightTile);
                 #region The Left Bullet
                 //THE LEFT SHOT
@@ -228,11 +228,11 @@ public class SpecialAdamH : SpecialAction
                 */
                 #endregion
             }
-            if (b.GetComponent<Bullet>().GetDir() == bulletDirs.D) //THIS IS WHERE WE LEFT OFF!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if (b.GetComponent<Bullet>().GetDir() == bulletDirs.D) //THIS IS WHERE WE LEFT OFF!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! no clue what this means anymore, make better comments asshole
             {
-                Tile leftTile = Physics2D.Raycast(b.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
+                Tile leftTile = Physics2D.Raycast(b.transform.position + Vector3.up * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
                 SideBullet(dir, whichPlayer, sourcePlayer, leftTile);
-                Tile rightTile = Physics2D.Raycast(b.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
+                Tile rightTile = Physics2D.Raycast(b.transform.position + Vector3.up * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
                 SideBullet(dir, whichPlayer, sourcePlayer, rightTile);
 
                 #region The Left Bullet
@@ -362,9 +362,9 @@ public class SpecialAdamH : SpecialAction
             }
             if (b.GetComponent<Bullet>().GetDir() == bulletDirs.R)
             {
-                Tile leftTile = Physics2D.Raycast(b.transform.position + Vector3.up * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
+                Tile leftTile = Physics2D.Raycast(b.transform.position + Vector3.left * 0.5f, Vector2.up, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
                 SideBullet(dir, whichPlayer, sourcePlayer, leftTile);
-                Tile rightTile = Physics2D.Raycast(b.transform.position + Vector3.down * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
+                Tile rightTile = Physics2D.Raycast(b.transform.position + Vector3.left * 0.5f, Vector2.down, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
                 SideBullet(dir, whichPlayer, sourcePlayer, rightTile);
 
                 #region The Left Bullet
@@ -494,9 +494,9 @@ public class SpecialAdamH : SpecialAction
             }
             if (b.GetComponent<Bullet>().GetDir() == bulletDirs.U)
             {
-                Tile leftTile = Physics2D.Raycast(b.transform.position + Vector3.left * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
+                Tile leftTile = Physics2D.Raycast(b.transform.position + Vector3.down * 0.5f, Vector2.left, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
                 SideBullet(dir, whichPlayer, sourcePlayer, leftTile);
-                Tile rightTile = Physics2D.Raycast(b.transform.position + Vector3.right * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
+                Tile rightTile = Physics2D.Raycast(b.transform.position + Vector3.down * 0.5f, Vector2.right, 1f, LayerMask.GetMask("Grid"), -0.5f).collider?.GetComponent<Tile>();
                 SideBullet(dir, whichPlayer, sourcePlayer, rightTile);
 
                 #region The Left Bullet
