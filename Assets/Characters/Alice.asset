@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d461183a78d7d7842bae827765d00cd1, type: 3}
-  m_Name: Arlene
+  m_Name: Alice
   m_EditorClassIdentifier: 
   hp: 1
   charSpecial: {fileID: 11400000, guid: 8383ae97d1f6bf04db6542a270b3b54f, type: 2}
@@ -18,7 +18,7 @@ MonoBehaviour:
   baseShots: 6
   animations: {fileID: 9100000, guid: 584eafe1f98c5e045b434af8cd35634b, type: 2}
   specialClip: {fileID: 8300000, guid: b9d26289d62304447848c3cc0214029a, type: 3}
-  charName: Arlene
+  charName: Alice
   portrait: {fileID: 8025942326733556224, guid: ffe24df254e916945bc55fbcc0fed66b, type: 3}
   miniPortrait: {fileID: 8025942326733556224, guid: ffe24df254e916945bc55fbcc0fed66b, type: 3}
   winQuote: I've studied far too much to lose to you!
